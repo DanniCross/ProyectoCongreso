@@ -1,5 +1,6 @@
 from .Congresista import Congresista
 
+
 class Congreso:
 
     def __init__(self, nodes, root):
@@ -11,7 +12,7 @@ class Congreso:
         if self.root is None:
             self.root = newCongresista
         else:
-            self.addNode(self.root, newCongresista)
+            self.root = self.addNode(self.root, newCongresista)
 
     def addNode(self, parent, congresista):
         if parent is None:
@@ -19,3 +20,8 @@ class Congreso:
             return
         if congresista.id < parent.id:
             parent.left(self.addNode(parent.left, congresista))
+        if congresista.id == parent.id:
+            parent.center(self.addNode(parent.center, congresista))
+        if congresista.id > parent.id:
+            parent.right(self.addNode(parent.right, congresista))
+        return parent
