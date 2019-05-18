@@ -1,14 +1,15 @@
-from .Congresista import Congresista
+from Conferee import Conferee
 
 
-class Congreso:
+class Congress:
 
     def __init__(self, nodes, root):
         self.nodes = nodes
         self.root = root
+        self.parties = []
 
-    def add(self, party, id):
-        newCongresista = Congresista(None, None, None, party, 0, id, 0, 0)
+    def add(self, party, id, name):
+        newCongresista = Congresista(party, 0, id, 0, 0)
         if self.root is None:
             self.root = newCongresista
         else:
