@@ -17,11 +17,11 @@ class Congreso:
     def addNode(self, parent, congresista):
         if parent is None:
             parent = congresista
-            return
-        if congresista.id < parent.id:
+            return parent
+        elif congresista.id < parent.id:
             parent.left(self.addNode(parent.left, congresista))
-        if congresista.id == parent.id:
+        elif congresista.id == parent.id:
             parent.center(self.addNode(parent.center, congresista))
-        if congresista.id > parent.id:
+        else:
             parent.right(self.addNode(parent.right, congresista))
         return parent
