@@ -1,6 +1,7 @@
 {
-    "python.pythonPath": "/home/camilog/anaconda3/bin/python",
+    "python.pythonPath": "/home/josec/anaconda3/bin/python",
     "python.linting.pylintArgs": [
         "----extension-pkg-whitelist=1xml"
-    ]
+    ],
+    "python.linting.enabled": false
 }
