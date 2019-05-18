@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/venv"
+set -gx VIRTUAL_ENV "/home/camilog/Descargas/ProyectosPyCharm/ProyectoCongreso/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
