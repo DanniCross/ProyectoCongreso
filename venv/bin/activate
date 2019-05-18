@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/camilog/Descargas/ProyectosPyCharm/ProyectoCongreso/venv"
+VIRTUAL_ENV="/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

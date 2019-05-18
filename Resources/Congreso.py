@@ -6,15 +6,16 @@ class Congreso:
         self.nodes = nodes
         self.root = root
 
-    def add(self, ):
-        newCongresista = Congresista()
+    def add(self, party, id):
+        newCongresista = Congresista(None, None, None, party, 0, id, 0, 0)
         if self.root is None:
             self.root = newCongresista
         else:
-            addNode()
+            self.addNode(self.root, newCongresista)
 
-    def addNode(self, parent):
-        newCongresista = Congresista()
+    def addNode(self, parent, congresista):
         if parent is None:
-            parent = newCongresista
-
+            parent = congresista
+            return
+        if congresista.id < parent.id:
+            parent.left(self.addNode(parent.left, congresista))
