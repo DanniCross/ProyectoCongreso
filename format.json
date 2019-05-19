@@ -106,12 +106,6 @@
                   "name": "Ximena",
                   "party": 1,
                   "childrens": []
-                },
-                {
-                  "id": 30,
-                  "name": "outside",
-                  "party": 2,
-                  "childrens":[]
                 }
               ]
             }
