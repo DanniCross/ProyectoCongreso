@@ -66,16 +66,7 @@ class GUI:
             screen.blit(Presi, (parent.x, parent.y))
             screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x, parent.y + 30))
         if parent.outside:
-            alert = pygame.display.set_mode((200, 100))
-            pygame.display.set_caption("¡ERROR!")
-            message = pygame.font.SysFont("Arial Narrow", 50)
-            while True:
-                for even in pygame.event.get():
-                    if even.type == pygame.QUIT:
-                        pygame.quit()
-            alert.fill((255, 255, 255))
-            alert.blit(self.message.render(f"El congresista {parent.id}.{parent.name} tiene más hijos políticos de los permitidos y no serán agregados."))
-            pygame.display.update()
+            pass
         self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow, Presi)
         self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow, Presi)
         self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow, Presi)
@@ -83,3 +74,6 @@ class GUI:
     def draw_conect(self, screen, connections):
         for conect in connections:
             pygame.draw.line(screen, (0, 0, 0), (conect.c1.x + 12, conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)
+
+    def outside(self):
+        pass
