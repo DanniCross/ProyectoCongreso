@@ -1,10 +1,6 @@
-from Base.Base import Base
+class Conferee():
 
-
-class Conferee(Base):
-
-    def __init__(self, party, idpos, id, name, posx, posy):
-        Base.__init__(self, posx, posy)
+    def __init__(self, party, idpos, id, name, x, y):
         self.left = None
         self.center = None
         self.right = None
@@ -12,3 +8,7 @@ class Conferee(Base):
         self.idpos = idpos
         self.id = id
         self.name = name
+        self.x = x
+        self.y = y
+        self.outside = False
+        self.adjacent = []

@@ -4,7 +4,7 @@ from Resources.JSON import JSON
 
 def main():
     json = JSON()
-    root = json.Read()
-    GUI(root)
+    congress = json.Read()
+    GUI(congress)
     
 main()
