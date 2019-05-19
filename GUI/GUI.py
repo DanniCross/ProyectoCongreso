@@ -6,7 +6,8 @@ pygame.init()
 
 class GUI:
 
-    def __init__(self):
+    def __init__(self, root):
+        self.root = root
         self.draw()
 
     def screen_size(self):
