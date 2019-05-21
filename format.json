@@ -1,193 +1,193 @@
 {
-  "president": {
-    "name": "Fulanito De Tal"
-  },
-  "party": [
-    {
-      "id": 1,
-      "name": "Red Party",
-      "leader": 1,
-      "color": "red"
+    "president": {
+        "name": "President Name"
     },
-    {
-      "id": 2,
-      "name": "Blue Party",
-      "leader": 12,
-      "color": "blue"
-    },
-    {
-      "id": 3,
-      "name": "Green Party",
-      "leader": 18,
-      "color": "green"
-    },
-    {
-      "id": 4,
-      "name": "Yellow Party",
-      "leader": 22,
-      "color": "yellow"
-    }
-  ],
-  "people": [
-    {
-      "id": 5,
-      "name": "Juan",
-      "party": 1,
-      "childrens": [
+    "party": [
         {
-          "id": 13,
-          "name": "Pedro",
-          "party": 2,
-          "childrens": [
-            {
-              "id": 1,
-              "name": "Katherine",
-              "party": 1,
-              "childrens": [
-                {
-                  "id": 11,
-                  "name": "Mario",
-                  "party": 1,
-                  "childrens": []
-                },
-                {
-                  "id": 18,
-                  "name": "María",
-                  "party": 3,
-                  "childrens": []
-                }
-              ]
-            },
-            {
-              "id": 7,
-              "name": "José",
-              "party": 1,
-              "childrens": [
-                {
-                  "id": 21,
-                  "name": "Pepito",
-                  "party": 3,
-                  "childrens": []
-                },
-                {
-                  "id": 16,
-                  "name": "Javier",
-                  "party": 2,
-                  "childrens": []
-                }
-              ]
-            },
-            {
-              "id": 9,
-              "name": "Jacinto",
-              "party": 1,
-              "childrens": [
-                {
-                  "id": 2,
-                  "name": "Miguel",
-                  "party": 1,
-                  "childrens": [
-                    {
-                      "id": 23,
-                      "name": "Mariana",
-                      "party": 4,
-                      "childrens": []
-                    }
-                  ]
-                },
-                {
-                  "id": 24,
-                  "name": "Natalia",
-                  "party": 3,
-                  "childrens": []
-                },
-                {
-                  "id": 3,
-                  "name": "Ximena",
-                  "party": 1,
-                  "childrens": []
-                }
-              ]
-            }
-          ]
+            "id": 1,
+            "name": "Red Party",
+            "leader": 1,
+            "color": "red"
         },
         {
-          "id": 20,
-          "name": "Juan David",
-          "party": 3,
-          "childrens": [
-            {
-              "id": 4,
-              "name": "Carlos",
-              "party": 1,
-              "childrens": []
-            },
-            {
-              "id": 25,
-              "name": "Ramiro",
-              "party": 3,
-              "childrens": []
-            },
-            {
-              "id": 17,
-              "name": "Santiago",
-              "party": 2,
-              "childrens": []
-            }
-          ]
+            "id": 2,
+            "name": "Blue Party",
+            "leader": 12,
+            "color": "blue"
         },
         {
-          "id": 15,
-          "name": "Amanda",
-          "party": 2,
-          "childrens": [
-            {
-              "id": 6,
-              "name": "Ernesto",
-              "party": 1,
-              "childrens": []
-            },
-            {
-              "id": 8,
-              "name": "Bertulio",
-              "party": 1,
-              "childrens": []
-            },
-            {
-              "id": 14,
-              "name": "Sandra",
-              "party": 2,
-              "childrens": [
-                {
-                  "id": 12,
-                  "name": "Milena",
-                  "party": 2,
-                  "childrens": []
-                },
-                {
-                  "id": 19,
-                  "name": "Laura",
-                  "party": 3,
-                  "childrens": []
-                },
-                {
-                  "id": 10,
-                  "name": "Camila",
-                  "party": 1,
-                  "childrens": [
-                    {
-                      "id": 22,
-                      "name": "Tiberio",
-                      "party": 4,
-                      "childrens": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+            "id": 3,
+            "name": "Green Party",
+            "leader": 18,
+            "color": "green"
+        },
+        {
+            "id": 4,
+            "name": "Yellow Party",
+            "leader": 22,
+            "color": "yellow"
         }
-      ]
-    }
-  ]
+    ],
+    "people": [
+        {
+            "id": 5,
+            "name": "Juan",
+            "party": 1,
+            "childrens": [
+                {
+                    "id": 13,
+                    "name": "Pedro",
+                    "party": 2,
+                    "childrens": [
+                        {
+                            "id": 1,
+                            "name": "Katherine",
+                            "party": 1,
+                            "childrens": [
+                                {
+                                    "id": 11,
+                                    "name": "Mario",
+                                    "party": 1,
+                                    "childrens": []
+                                },
+                                {
+                                    "id": 18,
+                                    "name": "María",
+                                    "party": 3,
+                                    "childrens": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": 7,
+                            "name": "José",
+                            "party": 1,
+                            "childrens": [
+                                {
+                                    "id": 21,
+                                    "name": "Pepito",
+                                    "party": 3,
+                                    "childrens": []
+                                },
+                                {
+                                    "id": 16,
+                                    "name": "Javier",
+                                    "party": 2,
+                                    "childrens": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": 9,
+                            "name": "Jacinto",
+                            "party": 1,
+                            "childrens": [
+                                {
+                                    "id": 2,
+                                    "name": "Miguel",
+                                    "party": 1,
+                                    "childrens": [
+                                        {
+                                            "id": 23,
+                                            "name": "Mariana",
+                                            "party": 4,
+                                            "childrens": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 24,
+                                    "name": "Natalia",
+                                    "party": 3,
+                                    "childrens": []
+                                },
+                                {
+                                    "id": 3,
+                                    "name": "Ximena",
+                                    "party": 1,
+                                    "childrens": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 20,
+                    "name": "Juan David",
+                    "party": 3,
+                    "childrens": [
+                        {
+                            "id": 4,
+                            "name": "Carlos",
+                            "party": 1,
+                            "childrens": []
+                        },
+                        {
+                            "id": 25,
+                            "name": "Ramiro",
+                            "party": 3,
+                            "childrens": []
+                        },
+                        {
+                            "id": 17,
+                            "name": "Santiago",
+                            "party": 2,
+                            "childrens": []
+                        }
+                    ]
+                },
+                {
+                    "id": 15,
+                    "name": "Amanda",
+                    "party": 2,
+                    "childrens": [
+                        {
+                            "id": 6,
+                            "name": "Ernesto",
+                            "party": 1,
+                            "childrens": []
+                        },
+                        {
+                            "id": 8,
+                            "name": "Bertulio",
+                            "party": 1,
+                            "childrens": []
+                        },
+                        {
+                            "id": 14,
+                            "name": "Sandra",
+                            "party": 2,
+                            "childrens": [
+                                {
+                                    "id": 12,
+                                    "name": "Milena",
+                                    "party": 2,
+                                    "childrens": []
+                                },
+                                {
+                                    "id": 19,
+                                    "name": "Laura",
+                                    "party": 3,
+                                    "childrens": []
+                                },
+                                {
+                                    "id": 10,
+                                    "name": "Camila",
+                                    "party": 1,
+                                    "childrens": [
+                                        {
+                                            "id": 22,
+                                            "name": "Tiberio",
+                                            "party": 4,
+                                            "childrens": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

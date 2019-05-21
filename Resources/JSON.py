@@ -10,11 +10,9 @@ class JSON:
         self.congress = Congress()
     
     def Read(self):
-        with open("/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/format.json") as file:
+        with open("format.json") as file:
             data = json.load(file)
-        
-        name = data['president']['name']
-        self.congress.add(0, 0, name)
+               
         for party in data['party']:
             color = party['color']
             if color == "red":
@@ -33,6 +31,9 @@ class JSON:
     
     def CreateConf(self, parent, data):
         for conferee in data: 
+            if parent is None:
+                self.congress.add(int(conferee['party']), int(conferee['id']), conferee['name'])
+                parent = self.CreateConf(self.congress.root, conferee['childrens'])
             if parent.left is None:
                 parent.left = Conferee(int(conferee['party']), 0, int(conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.left)

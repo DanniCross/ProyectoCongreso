@@ -26,12 +26,10 @@ class GUI:
         screen = pygame.display.set_mode(self.screen_size())
         pygame.display.set_caption("Congreso")
         self.fuente = pygame.font.SysFont("Arial Narrow", 20)
-        Presi = pygame.image.load("/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/Imgs/presi.png")
-        Red = pygame.image.load("/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/Imgs/red.png")
-        Blue = pygame.image.load("/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/Imgs/blue.png")
-        Yellow = pygame.image.load("/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/Imgs/yellow.png")
-        Green = pygame.image.load("/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/Imgs/green.png")
-        Presi = pygame.transform.scale(Presi, (30, 30))
+        Red = pygame.image.load("Imgs/red.png")
+        Blue = pygame.image.load("Imgs/blue.png")
+        Yellow = pygame.image.load("Imgs/yellow.png")
+        Green = pygame.image.load("Imgs/green.png")
         Red = pygame.transform.scale(Red, (30, 30))
         Blue = pygame.transform.scale(Blue, (30, 30))
         Yellow = pygame.transform.scale(Yellow, (30, 30))
@@ -44,32 +42,27 @@ class GUI:
                     sys.exit()
             screen.fill((125, 70, 200))
             self.draw_conect(screen, self.congress.connections)
-            self.draw_congress(screen, self.congress.root, Red, Blue, Green, Yellow, Presi)
+            self.draw_congress(screen, self.congress.root, Red, Blue, Green, Yellow)
             pygame.display.update()
 
-    def draw_congress(self, screen, parent, Red, Blue, Green, Yellow, Presi):        
+    def draw_congress(self, screen, parent, Red, Blue, Green, Yellow):        
         if parent is None:
             return
         if parent.party == 1:
             screen.blit(Red, (parent.x, parent.y))
-            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x, parent.y + 30))
+            screen.blit((self.fuente.render(f"  {parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 2:
             screen.blit(Blue, (parent.x, parent.y))
-            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x, parent.y + 30))
+            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 3:
             screen.blit(Green, (parent.x, parent.y))
-            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x, parent.y + 30))
+            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 4:
             screen.blit(Yellow, (parent.x, parent.y))
-            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x, parent.y + 30))
-        else:
-            screen.blit(Presi, (parent.x, parent.y))
-            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x, parent.y + 30))
-        if parent.outside:
-            pass
-        self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow, Presi)
-        self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow, Presi)
-        self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow, Presi)
+            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+        self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow)
+        self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow)
+        self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow)
     
     def draw_conect(self, screen, connections):
         for conect in connections:
