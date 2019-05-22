@@ -41,11 +41,11 @@ class Congress:
     def set_position(self, current, i, previous, j):
         if current is not None:
             if i == 0:
-                current.x = 700
+                current.x = 660
                 current.y = 10
                 previous = current
             elif i == 1:
-                current.x = previous.x - (350 - j)
+                current.x = previous.x - (320 - j)
                 current.y = previous.y + 100
                 previous = current
             elif i == 2:
@@ -53,7 +53,7 @@ class Congress:
                 current.y = previous.y + 100
                 previous = current
             else:
-                current.x = previous.x + (350 - j)
+                current.x = previous.x + (320 - j)
                 current.y = previous.y + 100
                 previous = current
             self.set_position(current.left, 1, previous, j + 70)
