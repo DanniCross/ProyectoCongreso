@@ -39,6 +39,8 @@ class JSON:
             if parent.left is None:
                 parent.left = Conferee(int(conferee['party']), 0, int(conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.left)
+                if parent.left.id > self.congress.max:
+                    self.congress.max = parent.left.id
                 if 0 < len(conferee['childrens']):
                     if len(conferee['childrens']) > 3:
                         parent.left.outside = True
@@ -48,6 +50,8 @@ class JSON:
             if parent.center is None:
                 parent.center = Conferee(int(conferee['party']), 0, int(conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.center)
+                if parent.center.id > self.congress.max:
+                    self.congress.max = parent.center.id
                 if 0 < len(conferee['childrens']):
                     if len(conferee['childrens']) > 3:
                         parent.left.outside = True
@@ -57,6 +61,8 @@ class JSON:
             if parent.right is None:
                 parent.right = Conferee(int(conferee['party']), 0, int(conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.right)
+                if parent.right.id > self.congress.max:
+                    self.congress.max = parent.right.id
                 if 0 < len(conferee['childrens']):
                     if len(conferee['childrens']) > 3:
                         parent.left.outside = True
