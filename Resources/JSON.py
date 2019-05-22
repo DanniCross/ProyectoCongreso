@@ -54,7 +54,7 @@ class JSON:
                     self.congress.max = parent.center.id
                 if 0 < len(conferee['childrens']):
                     if len(conferee['childrens']) > 3:
-                        parent.left.outside = True
+                        parent.center.outside = True
                     parent.center = self.CreateConf(parent.center, conferee['childrens'])
                     continue
                 continue
@@ -65,7 +65,7 @@ class JSON:
                     self.congress.max = parent.right.id
                 if 0 < len(conferee['childrens']):
                     if len(conferee['childrens']) > 3:
-                        parent.left.outside = True
+                        parent.right.outside = True
                     parent.right = self.CreateConf(parent.right, conferee['childrens'])
                     continue
                 continue

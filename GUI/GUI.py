@@ -30,7 +30,6 @@ class GUI:
 
     def draw(self):
         cursor = Cursor()
-        print(self.screen_size())
         screen = pygame.display.set_mode(self.screen_size())
         pygame.display.set_caption("Congress")
 
