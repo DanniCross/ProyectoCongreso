@@ -13,7 +13,7 @@ class GUI:
 
     def __init__(self, congress):
         self.congress = congress
-        self.fuente = None
+        self.font = None
         self.cursor = Cursor()
         self.draw()
 
@@ -32,11 +32,11 @@ class GUI:
         cursor = Cursor()
         print(self.screen_size())
         screen = pygame.display.set_mode(self.screen_size())
-        pygame.display.set_caption("Congreso")
+        pygame.display.set_caption("Congress")
 
         # fonts
-        self.fuente = pygame.font.SysFont("Arial Narrow", 20)
-        add = self.fuente.render("Add Node", True, (255, 255, 255))
+        self.font = pygame.font.SysFont("Arial Narrow", 20)
+        add = self.font.render("Add Node", True, (255, 255, 255))
 
         # Load images
         Red = pygame.image.load("Imgs/red.png")
@@ -66,8 +66,7 @@ class GUI:
                     sys.exit()
             screen.fill((125, 70, 200))
             self.draw_conect(screen, self.congress.connections)
-            self.draw_congress(screen, self.congress.root,
-                               Red, Blue, Green, Yellow)
+            self.draw_congress(screen, self.congress.root, Red, Blue, Green, Yellow)
 
             cursor.update()
             buttonAdd.update(screen, cursor, add)
@@ -82,19 +81,19 @@ class GUI:
             return
         if parent.party == 1:
             screen.blit(Red, (parent.x, parent.y))
-            screen.blit((self.fuente.render(
+            screen.blit((self.font.render(
                 f"  {parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 2:
             screen.blit(Blue, (parent.x, parent.y))
-            screen.blit((self.fuente.render(
+            screen.blit((self.font.render(
                 f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 3:
             screen.blit(Green, (parent.x, parent.y))
-            screen.blit((self.fuente.render(
+            screen.blit((self.font.render(
                 f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 4:
             screen.blit(Yellow, (parent.x, parent.y))
-            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+            screen.blit((self.font.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         if parent.outside:
             parent.outside = False
             self.outside(parent)           
