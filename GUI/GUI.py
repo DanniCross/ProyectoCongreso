@@ -1,6 +1,8 @@
 import pygame
 import sys
 import subprocess
+from tkinter import *
+from tkinter import messagebox as mb
 pygame.init()
 
 
@@ -60,6 +62,9 @@ class GUI:
         elif parent.party == 4:
             screen.blit(Yellow, (parent.x, parent.y))
             screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+        if parent.outside:
+            parent.outside = False
+            self.outside(parent)           
         self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow)
@@ -68,5 +73,10 @@ class GUI:
         for conect in connections:
             pygame.draw.line(screen, (0, 0, 0), (conect.c1.x + 12, conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)
 
-    def outside(self):
-        pass
+    def outside(self, parent):
+        screen = Tk()
+        screen.withdraw()
+        if mb.showinfo("ALERT", f"The conferee {parent.name} has a lot of 3 political sons, so, only 3 will be added."):
+            Tk().quit()
+        
+        

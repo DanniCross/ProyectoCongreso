@@ -33,32 +33,34 @@ class JSON:
         for conferee in data: 
             if parent is None:
                 self.congress.add(int(conferee['party']), int(conferee['id']), conferee['name'])
+                if int(conferee['id']) > self.congress.max:
+                    self.congress.max = int(conferee['id'])
                 parent = self.CreateConf(self.congress.root, conferee['childrens'])
             if parent.left is None:
                 parent.left = Conferee(int(conferee['party']), 0, int(conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.left)
-                if 0 < len(conferee['childrens']) <= 3:
+                if 0 < len(conferee['childrens']):
+                    if len(conferee['childrens']) > 3:
+                        parent.left.outside = True
                     parent.left = self.CreateConf(parent.left, conferee['childrens'])
                     continue
-                elif len(conferee['childrens']) > 3:
-                    parent.left.outside = True
                 continue
             if parent.center is None:
                 parent.center = Conferee(int(conferee['party']), 0, int(conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.center)
-                if 0 < len(conferee['childrens']) <= 3:
+                if 0 < len(conferee['childrens']):
+                    if len(conferee['childrens']) > 3:
+                        parent.left.outside = True
                     parent.center = self.CreateConf(parent.center, conferee['childrens'])
                     continue
-                elif len(conferee['childrens']) > 3:
-                    parent.left.outside = True
                 continue
             if parent.right is None:
                 parent.right = Conferee(int(conferee['party']), 0, int(conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.right)
-                if 0 < len(conferee['childrens']) <= 3:
+                if 0 < len(conferee['childrens']):
+                    if len(conferee['childrens']) > 3:
+                        parent.left.outside = True
                     parent.right = self.CreateConf(parent.right, conferee['childrens'])
                     continue
-                elif len(conferee['childrens']) > 3:
-                    parent.left.outside = True
                 continue
         return parent
