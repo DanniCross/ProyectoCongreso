@@ -6,6 +6,7 @@ class Congress:
 
     def __init__(self):
         self.root = None
+        self.max = 0
         self.parties = []
         self.connections = []
 
