@@ -10,7 +10,7 @@ class JSON:
         self.congress = Congress()
     
     def Read(self):
-        with open("/run/media/josec/Jose Cruz/Documentos/Pycharm Projects/ProyectoI/format.json") as file:
+        with open("format.json") as file:
             data = json.load(file)
         
         name = data['president']['name']
