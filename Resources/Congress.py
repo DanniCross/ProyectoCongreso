@@ -1,5 +1,6 @@
 from .Conferee import Conferee
 from .Connection import Connection
+from random import *
 
 
 class Congress:
@@ -11,7 +12,8 @@ class Congress:
         self.connections = []
 
     def add(self, party, id, name):
-        newconferee = Conferee(party, 0, id, name, 0, 0)
+        pos = randint(1, 30)
+        newconferee = Conferee(party, pos, id, name, 0, 0)
         if self.root is None:
             self.root = newconferee
         else:
@@ -26,11 +28,22 @@ class Congress:
             return parent
         elif conferee.id < parent.id:
             parent.left = self.addNode(parent.left, conferee)
+            self.addConnection(parent, parent.left)
         elif conferee.id == parent.id:
             parent.center = self.addNode(parent.center, conferee)
+            self.addConnection(parent, parent.center)
         else:
             parent.right = self.addNode(parent.right, conferee)
+            self.addConnection(parent, parent.right)
         return parent
+
+    def deleteNode(self, conferee, id):
+        if conferee.left is not None or conferee.center is not None or conferee.right is not None:
+            conferee = conferee.left
+            if conferee.left.left is not None or conferee.left.center is not None or conferee.left.right is not None:
+                conferee.left = conferee.left.left
+                conferee.center = conferee.left.center
+                conferee.right = conferee.left.right
 
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)

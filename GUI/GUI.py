@@ -6,6 +6,7 @@ from Views.cursor import Cursor
 from random import randint
 from tkinter import *
 from tkinter import messagebox as mb
+from Json.JSONN import JSON2
 pygame.init()
 
 
@@ -29,6 +30,7 @@ class GUI:
         return size
 
     def draw(self):
+        json = JSON2()
         cursor = Cursor()
         screen = pygame.display.set_mode(self.screen_size())
         pygame.display.set_caption("Congress")
@@ -60,7 +62,7 @@ class GUI:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if cursor.colliderect(buttonAdd.rect):
                         buttonAdd.add(self.congress, randint(
-                            1, 4), randint(1, 30), "jose")
+                            1, 4), randint(1, 3), json.Read())
                     elif cursor.colliderect(buttonAdd.rect):
                         buttonDelete.delete(self.congress, randint(1, 30))
                 if event.type is pygame.QUIT:
@@ -68,7 +70,8 @@ class GUI:
                     sys.exit()
             screen.fill((125, 70, 200))
             self.draw_conect(screen, self.congress.connections)
-            self.draw_congress(screen, self.congress.root, Red, Blue, Green, Yellow)
+            self.draw_congress(screen, self.congress.root,
+                               Red, Blue, Green, Yellow)
 
             cursor.update()
             buttonAdd.update(screen, cursor, add)
@@ -91,7 +94,8 @@ class GUI:
                 f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 4:
             screen.blit(Yellow, (parent.x, parent.y))
-            screen.blit((self.font.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+            screen.blit((self.font.render(
+                f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         if parent.outside:
             parent.outside = False
             self.outside(parent)

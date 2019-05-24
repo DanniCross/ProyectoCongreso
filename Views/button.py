@@ -27,5 +27,4 @@ class Boton(pygame.sprite.Sprite):
     def add(self, congress, party, id, name):
         congress.add(party, id, name)
 
-    def delete(self, congress):
-        
+    # def delete(self, congress):
