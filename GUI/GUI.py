@@ -6,6 +6,7 @@ from Views.cursor import Cursor
 from random import randint
 from tkinter import *
 from tkinter import messagebox as mb
+from pygame import Rect
 pygame.init()
 
 
@@ -16,6 +17,7 @@ class GUI:
         self.font = None
         self.cursor = Cursor()
         self.draw()
+        self.son = False
 
     def screen_size(self):
         size = (None, None)
@@ -57,11 +59,16 @@ class GUI:
 
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type is pygame.MOUSEBUTTONDOWN:
                     if cursor.colliderect(buttonAdd.rect):
-                        buttonAdd.add(self.congress, randint(
-                            1, 4), randint(1, 30), "jose")
-                    elif cursor.colliderect(buttonAdd.rect):
+                        self.son = True
+                    elif self.son:
+                        for conferee in self.congress.conferees:
+                            if (conferee.rect.x < pygame.mouse.get_pos()[0] < conferee.rect.right and conferee.rect.y < pygame.mouse.get_pos()[1] < conferee.rect.bottom):
+                                buttonAdd.add(self.congress, conferee, randint(1, 4), 0, "Jose")
+                                break
+                        self.son = False
+                    elif cursor.colliderect(buttonDelete.rect):
                         buttonDelete.delete(self.congress, randint(1, 30))
                 if event.type is pygame.QUIT:
                     pygame.quit()
@@ -102,7 +109,7 @@ class GUI:
     def draw_conect(self, screen, connections):
         for conect in connections:
             pygame.draw.line(screen, (0, 0, 0), (conect.c1.x + 12,
-                                                 conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)
+                                                 conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)  
 
     def outside(self, parent):
         screen = Tk()
