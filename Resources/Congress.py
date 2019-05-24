@@ -46,15 +46,21 @@ class Congress:
         actual.center = self.addNode(actual.center, parent, conferee)
         actual.right = self.addNode(actual.right, parent, conferee)
         return actual
-       
 
     def deleteNode(self, conferee, id):
-        if conferee.left is not None or conferee.center is not None or conferee.right is not None:
+        if conferee.left is not None and conferee.right is not None or conferee.center is not None:
+            conferee = conferee.left
+            if conferee.left.left is not None or conferee.left.center is not None or conferee.left.right is not None:
+                conferee.right.left = conferee.left.left
+                conferee.right.center = conferee.left.center
+                conferee.right.right = conferee.left.right
+        elif conferee.left is not None and conferee.right.left is None and conferee.right.center is None and conferee.right.right is None:
             conferee = conferee.left
             if conferee.left.left is not None or conferee.left.center is not None or conferee.left.right is not None:
                 conferee.left = conferee.left.left
                 conferee.center = conferee.left.center
                 conferee.right = conferee.left.right
+        elif 
 
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)
