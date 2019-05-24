@@ -1,4 +1,7 @@
-class Conferee():
+from pygame import Rect
+
+
+class Conferee:
 
     def __init__(self, party, idpos, id, name, x, y):
         self.left = None
@@ -12,3 +15,4 @@ class Conferee():
         self.y = y
         self.outside = False
         self.adjacent = []
+        self.rect = Rect(0, 0, 30, 30)

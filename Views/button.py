@@ -24,7 +24,9 @@ class Boton(pygame.sprite.Sprite):
         ventana.blit(self.actual, self.rect)
         ventana.blit(agregar, (self.x + 10, self.y + 10))
 
-    def add(self, congress, party, id, name):
-        congress.add(party, id, name)
+    def add(self, congress, parent, party, id, name):
+        congress.add(parent, party, id, name)
 
-    # def delete(self, congress):
+    def delete(self, congress):
+        pass
+

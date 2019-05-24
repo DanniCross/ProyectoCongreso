@@ -35,8 +35,7 @@ class JSON:
     def CreateConf(self, parent, data):
         for conferee in data:
             if parent is None:
-                self.congress.add(int(conferee['party']), int(
-                    conferee['id']), conferee['name'])
+                self.congress.add(None, int(conferee['party']), int(conferee['id']), conferee['name'])
                 if int(conferee['id']) > self.congress.max:
                     self.congress.max = int(conferee['id'])
                 parent = self.CreateConf(
@@ -45,6 +44,7 @@ class JSON:
                 parent.left = Conferee(int(conferee['party']), 0, int(
                     conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.left)
+                self.congress.conferees.append(parent.left)
                 if parent.left.id > self.congress.max:
                     self.congress.max = parent.left.id
                 if 0 < len(conferee['childrens']):
@@ -58,6 +58,7 @@ class JSON:
                 parent.center = Conferee(int(conferee['party']), 0, int(
                     conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.center)
+                self.congress.conferees.append(parent.center)
                 if parent.center.id > self.congress.max:
                     self.congress.max = parent.center.id
                 if 0 < len(conferee['childrens']):
@@ -71,6 +72,7 @@ class JSON:
                 parent.right = Conferee(int(conferee['party']), 0, int(
                     conferee['id']), conferee['name'], 0, 0)
                 self.congress.addConnection(parent, parent.right)
+                self.congress.conferees.append(parent.right)
                 if parent.right.id > self.congress.max:
                     self.congress.max = parent.right.id
                 if 0 < len(conferee['childrens']):
