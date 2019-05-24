@@ -15,6 +15,8 @@ class Congress:
         if self.root is None:
             self.root = newconferee
         else:
+            self.max += 1
+            newconferee.id = self.max
             self.root = self.addNode(self.root, newconferee)
             self.set_position(self.root, 0, None, 0)
 
