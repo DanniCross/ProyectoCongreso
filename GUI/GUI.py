@@ -118,5 +118,5 @@ class GUI:
     def outside(self, parent):
         screen = Tk()
         screen.withdraw()
-        if mb.showinfo("ALERT", f"The conferee {parent.name} has above 3 political sons, so, only 3 will be added."):
+        if mb.showinfo("ALERT", f"The conferee {parent.name} already has the maximun number of sons, it's not possible to add more."):
             Tk().quit()
