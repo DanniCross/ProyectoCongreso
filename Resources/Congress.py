@@ -23,13 +23,13 @@ class Congress:
             parent = conferee
             return parent
         elif conferee.id < parent.id:
-            parent.left(self.addNode(parent.left, conferee))
+            parent.left = self.addNode(parent.left, conferee)
         elif conferee.id == parent.id:
-            parent.center(self.addNode(parent.center, conferee))
+            parent.center = self.addNode(parent.center, conferee)
         else:
-            parent.right(self.addNode(parent.right, conferee))
+            parent.right = self.addNode(parent.right, conferee)
         return parent
-    
+
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)
         conAux = Connection(c2, c1)
@@ -60,5 +60,3 @@ class Congress:
             self.set_position(current.left, 1, previous, j + 70)
             self.set_position(current.center, 2, previous, j + 70)
             self.set_position(current.right, 3, previous, j + 70)
-                
-

@@ -3,7 +3,7 @@ import sys
 import subprocess
 from Views.button import Boton
 from Views.cursor import Cursor
-from random import random
+from random import randint
 from tkinter import *
 from tkinter import messagebox as mb
 pygame.init()
@@ -53,14 +53,17 @@ class GUI:
         Green = pygame.transform.scale(Green, (30, 30))
 
         # buttons
-        buttonAdd = Boton(buttonUp, buttonDown, 100, 600)
+        buttonAdd = Boton(buttonUp, buttonDown, 100, 650)
+        buttonDelete = Boton(buttonUp, buttonDown, 200, 650)
 
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if cursor.colliderect(buttonAdd.rect):
-                        buttonAdd.add(self.congress, ran, 13, "jose")
-
+                        buttonAdd.add(self.congress, randint(
+                            1, 4), randint(1, 30), "jose")
+                    elif cursor.colliderect(buttonAdd.rect):
+                        buttonDelete.delete(self.congress, randint(1, 30))
                 if event.type is pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -72,10 +75,6 @@ class GUI:
             cursor.update()
             buttonAdd.update(screen, cursor, add)
             pygame.display.update()
-            #boton2.update(ventana, cursor, agregar2)
-            #boton3.update(ventana, cursor, agregar3)
-            #boton4.update(ventana, cursor, agregar4)
-            #boton5.update(ventana, cursor, agregar5)
 
     def draw_congress(self, screen, parent, Red, Blue, Green, Yellow):
         if parent is None:
@@ -94,10 +93,11 @@ class GUI:
                 f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 4:
             screen.blit(Yellow, (parent.x, parent.y))
-            screen.blit((self.fuente.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+            screen.blit((self.fuente.render(
+                f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         if parent.outside:
             parent.outside = False
-            self.outside(parent)           
+            self.outside(parent)
         self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow)
@@ -112,5 +112,3 @@ class GUI:
         screen.withdraw()
         if mb.showinfo("ALERT", f"The conferee {parent.name} has a lot of 3 political sons, so, only 3 will be added."):
             Tk().quit()
-        
-        
