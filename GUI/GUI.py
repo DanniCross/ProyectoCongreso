@@ -91,12 +91,7 @@ class GUI:
                 f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 4:
             screen.blit(Yellow, (parent.x, parent.y))
-<<<<<<< HEAD
-            screen.blit((self.fuente.render(
-                f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
-=======
             screen.blit((self.font.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
->>>>>>> fca8541a0af0e20c358514edaedcadeeb8197a9c
         if parent.outside:
             parent.outside = False
             self.outside(parent)
