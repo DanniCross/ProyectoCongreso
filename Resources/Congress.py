@@ -60,7 +60,6 @@ class Congress:
                 conferee.left = conferee.left.left
                 conferee.center = conferee.left.center
                 conferee.right = conferee.left.right
-        elif 
 
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)
