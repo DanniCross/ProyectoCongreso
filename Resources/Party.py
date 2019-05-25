@@ -1,3 +1,4 @@
+# Class that allows create each of the 4 political parties how an object.
 class Party:
 
     def __init__(self, id, name, leader, color):

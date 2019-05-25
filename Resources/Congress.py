@@ -2,6 +2,7 @@ from .Conferee import Conferee
 from .Connection import Connection
 
 
+# Class where the tree is created.
 class Congress:
 
     def __init__(self):
@@ -13,6 +14,7 @@ class Congress:
         self.height = 0
         self.Type = ""
 
+    # This method allows add the root and new nodes to the tree.
     def add(self, parent, party, id, name):
         newconferee = Conferee(party, id, name)
         if self.root is None:
@@ -24,6 +26,7 @@ class Congress:
             self.set_position(self.root, 0, None, 0)
             self.level(self.root, 0)
 
+    # With this method the new nodes are added in one position (left, center or right).
     def addNode(self, actual, parent, conferee):
         if actual is None:
             return actual
@@ -45,6 +48,7 @@ class Congress:
         actual.right = self.addNode(actual.right, parent, conferee)
         return actual
 
+    # This method allows expel a conferee of the congress.
     def deleteNode(self, conferee, id):
         if conferee.left is not None and conferee.right is not None or conferee.center is not None:
             conferee = conferee.left
@@ -59,6 +63,7 @@ class Congress:
                 conferee.center = conferee.left.center
                 conferee.right = conferee.left.right
 
+    # This methos give the connections between the nodes.
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)
         conAux = Connection(c2, c1)
@@ -68,6 +73,7 @@ class Congress:
         c1.adjacent.append(c2)
         c2.adjacent.append(c1)
 
+    # With this method the screen position of each node is given.
     def set_position(self, current, i, previous, j):
         if current is not None:
             if i == 0:
@@ -98,6 +104,7 @@ class Congress:
             self.set_position(current.center, 2, previous, j + 70)
             self.set_position(current.right, 3, previous, j + 70)
     
+    # This method allows calculate the level and the height of the tree.
     def level(self, parent, i):
         if parent is None:
             return

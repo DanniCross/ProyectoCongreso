@@ -1,6 +1,6 @@
 import pygame
 
-
+# Class that allows create a button in pygame.
 class ButtonP(pygame.sprite.Sprite):
 
     def __init__(self, up, down, x, y):
@@ -13,6 +13,7 @@ class ButtonP(pygame.sprite.Sprite):
         self.x = x
         self.y = y
 
+    # With this methos the button image is update according to the cursor position.
     def update(self, screen, cursor, add):
         if cursor.colliderect(self.rect):
             self.current = self.selection
@@ -21,8 +22,10 @@ class ButtonP(pygame.sprite.Sprite):
         screen.blit(self.current, self.rect)
         screen.blit(add, (self.x + 10, self.y + 10))
 
+    # methos for the add button.
     def add(self, congress, parent, party, id, name):
         congress.add(parent, party, id, name)
 
+    # Method for the delete button.
     def delete(self, congress):
         pass

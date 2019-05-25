@@ -4,6 +4,7 @@ from Resources.Party import Party
 import json
 
 
+# Class for reading the json file with the data of the tree.
 class JSON:
 
     def __init__(self):
@@ -33,6 +34,7 @@ class JSON:
         self.congress.level(self.congress.root, 0)
         return self.congress
 
+    # Method that entry the file data in the tree
     def CreateConf(self, parent, data):
         for conferee in data:
 
