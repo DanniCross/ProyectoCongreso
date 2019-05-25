@@ -1,8 +1,6 @@
 import pygame
 import random
 import string
-from Resources.Conferee import Conferee
-from Resources.Congress import Congress
 
 
 class ButtonP(pygame.sprite.Sprite):

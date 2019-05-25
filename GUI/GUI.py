@@ -81,12 +81,11 @@ class GUI:
                     pygame.quit()
                     sys.exit()
             screen.fill((125, 70, 200))
+            cursor.update()
+            buttonAdd.update(screen, cursor, add)
             self.draw_conect(screen, self.congress.connections)
             self.draw_congress(screen, self.congress.root,
                                Red, Blue, Green, Yellow)
-
-            cursor.update()
-            buttonAdd.update(screen, cursor, add)
             pygame.display.update()
 
     def draw_congress(self, screen, parent, Red, Blue, Green, Yellow):

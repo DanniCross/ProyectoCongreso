@@ -12,7 +12,7 @@ class Congress:
         self.connections = []
 
     def add(self, parent, party, id, name):
-        newconferee = Conferee(party, 0, id, name, 0, 0)
+        newconferee = Conferee(party, id, name)
         if self.root is None:
             self.root = newconferee
         else:
