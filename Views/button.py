@@ -5,14 +5,14 @@ from Resources.Conferee import Conferee
 from Resources.Congress import Congress
 
 
-class Button(pygame.sprite.Sprite):
+class ButtonP(pygame.sprite.Sprite):
 
     def __init__(self, up, down, x, y):
-        super(Button, Button).__init__(self)
+        super(ButtonP, ButtonP).__init__(self)
         self.normal = up
         self.selection = down
         self.current = self.normal
-        self.rect = self.actual.get_rect()
+        self.rect = self.current.get_rect()
         self.rect.left, self.rect.top = (x, y)
         self.x = x
         self.y = y

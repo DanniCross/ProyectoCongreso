@@ -1,13 +1,13 @@
 import pygame
 import sys
 import subprocess
-from Views.cursor import Cursor
-from random import randint
 from tkinter import *
 from tkinter import messagebox as mb
+from Views.cursor import Cursor
+from Views.button import ButtonP
+from random import randint
 from pygame import Rect
 from Json.JSONN import JSON2
-from .OUTSIDE import OUTSIDE
 pygame.init()
 
 
@@ -56,7 +56,8 @@ class GUI:
         Green = pygame.transform.scale(Green, (30, 30))
 
         # buttons
-        buttonAdd = Button(buttonUp, buttonUp, 100, 650)
+        buttonAdd = ButtonP(buttonUp, buttonDown, 100, 650)
+        buttonDelete = ButtonP(buttonUp, buttonDown, 200, 650)
 
         while True:
             for event in pygame.event.get():
@@ -104,7 +105,7 @@ class GUI:
                 f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         if parent.outside:
             parent.outside = False
-            OUTSIDE().outside(parent)
+            self.outside(parent)
         self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow)
@@ -113,3 +114,18 @@ class GUI:
         for conect in connections:
             pygame.draw.line(screen, (0, 0, 0), (conect.c1.x + 12,
                                                  conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)  
+
+    """def outside(self, parent):
+        Advice = Tk()
+        Advice.title("ADVICE")
+        Advice.geometry(
+           f"300x100+{int(self.screen_size()[0]/2) - 165}+{int(self.screen_size()[1]/2) - 90}")
+        Advice.overrideredirect(1)
+
+        Advice.mainloop()"""
+    
+    def outside(self, parent):
+        Tk().withdraw()
+        if mb.showinfo("ADVICE", f"The conferee {parent.name} already has the maximum number of sons, so, it's not possible add more."):
+            Tk().destroy()
+    
