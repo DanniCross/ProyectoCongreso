@@ -1,6 +1,4 @@
 import pygame
-import random
-import string
 
 
 class ButtonP(pygame.sprite.Sprite):
@@ -19,7 +17,7 @@ class ButtonP(pygame.sprite.Sprite):
         if cursor.colliderect(self.rect):
             self.current = self.selection
         else:
-            self.currrent = self.normal
+            self.current = self.normal
         screen.blit(self.current, self.rect)
         screen.blit(add, (self.x + 10, self.y + 10))
 
@@ -28,4 +26,3 @@ class ButtonP(pygame.sprite.Sprite):
 
     def delete(self, congress):
         pass
-

@@ -1,12 +1,10 @@
 import pygame
-import sys
 import subprocess
 from tkinter import *
 from tkinter import messagebox as mb
 from Views.cursor import Cursor
 from Views.button import ButtonP
 from random import randint
-from pygame import Rect
 from Json.JSONN import JSON2
 pygame.init()
 
@@ -39,6 +37,10 @@ class GUI:
 
         # fonts
         self.font = pygame.font.SysFont("Arial Narrow", 20)
+        fontIn = pygame.font.SysFont("Arial Narrow", 30)
+        fontBold = pygame.font.SysFont("Arial Narrow", 25)
+        fontBold.set_bold(1)
+        font = pygame.font.SysFont("Arial Narrow", 25)
         add = self.font.render("Add Node", True, (255, 255, 255))
 
         # Load images
@@ -67,11 +69,11 @@ class GUI:
                     elif self.son:
                         for connect in self.congress.connections:
                             if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right 
-                                and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
+                                    and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
                                 buttonAdd.add(self.congress, connect.c1, randint(1, 4), 0, json.Read())
                                 break
                             elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
-                                  and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
+                                    and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
                                 buttonAdd.add(self.congress, connect.c2, randint(1, 4), 0, json.Read())
                                 break
                         self.son = False
@@ -83,9 +85,15 @@ class GUI:
             screen.fill((125, 70, 200))
             cursor.update()
             buttonAdd.update(screen, cursor, add)
+            pygame.draw.rect(screen, (0, 0, 0), (0, 0, 200, 240))
+            pygame.draw.rect(screen, (255, 255, 255), (10, 10, 180, 220))
+            screen.blit((fontIn.render("INFO", True, (0, 0, 0))), (77, 15))
+            screen.blit((fontBold.render("N° Levels:", True, (0, 0, 0))), (15, 50))
+            screen.blit((font.render(f"{self.congress.levelMax}", True, (0, 0, 0))), (120, 50))
+            screen.blit((fontBold.render("Height:", True, (0, 0, 0))), (15, 75))
+            screen.blit((font.render(f"{self.congress.height}", True, (0, 0, 0))), (90, 75))
             self.draw_conect(screen, self.congress.connections)
-            self.draw_congress(screen, self.congress.root,
-                               Red, Blue, Green, Yellow)
+            self.draw_congress(screen, self.congress.root,Red, Blue, Green, Yellow)
             pygame.display.update()
 
     def draw_congress(self, screen, parent, Red, Blue, Green, Yellow):
@@ -124,4 +132,3 @@ class GUI:
         if mb.showinfo("ADVICE", 
             f"The conferee {parent.name} already has the maximum number of sons, so, it's not possible add more."):
             Tk().destroy()
-    

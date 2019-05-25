@@ -1,6 +1,5 @@
 from .Conferee import Conferee
 from .Connection import Connection
-from random import *
 
 
 class Congress:
@@ -10,6 +9,9 @@ class Congress:
         self.max = 0
         self.parties = []
         self.connections = []
+        self.levelMax = 0
+        self.height = 0
+        self.Type = ""
 
     def add(self, parent, party, id, name):
         newconferee = Conferee(party, id, name)
@@ -20,6 +22,7 @@ class Congress:
             newconferee.id = self.max
             self.root = self.addNode(self.root, parent, newconferee)
             self.set_position(self.root, 0, None, 0)
+            self.level(self.root, 0)
 
     def addNode(self, actual, parent, conferee):
         if actual is None:
@@ -94,3 +97,14 @@ class Congress:
             self.set_position(current.left, 1, previous, j + 70)
             self.set_position(current.center, 2, previous, j + 70)
             self.set_position(current.right, 3, previous, j + 70)
+    
+    def level(self, parent, i):
+        if parent is None:
+            return
+        parent.level = i
+        if parent.level > self.levelMax:
+            self.levelMax = parent.level
+            self.height = self.levelMax + 1
+        self.level(parent.left, i + 1)
+        self.level(parent.center, i + 1)
+        self.level(parent.right, i + 1)

@@ -15,3 +15,4 @@ class Conferee:
         self.outside = False
         self.adjacent = []
         self.rect = Rect(0, 0, 30, 30)
+        self.level = 0

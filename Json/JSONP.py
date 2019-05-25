@@ -30,6 +30,7 @@ class JSON:
         self.congress.root = self.CreateConf(
             self.congress.root, data['people'])
         self.congress.set_position(self.congress.root, 0, None, 0)
+        self.congress.level(self.congress.root, 0)
         return self.congress
 
     def CreateConf(self, parent, data):
