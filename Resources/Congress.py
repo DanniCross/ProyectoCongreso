@@ -10,13 +10,11 @@ class Congress:
         self.max = 0
         self.parties = []
         self.connections = []
-        self.conferees = []
 
     def add(self, parent, party, id, name):
         newconferee = Conferee(party, 0, id, name, 0, 0)
         if self.root is None:
             self.root = newconferee
-            self.conferees.append(self.root)
         else:
             self.max += 1
             newconferee.id = self.max
@@ -30,15 +28,12 @@ class Congress:
             if actual.left is None:
                 actual.left = conferee
                 self.addConnection(actual, actual.left)
-                self.conferees.append(actual.left)
             elif actual.center is None:
                 actual.center = conferee
                 self.addConnection(actual, actual.center)
-                self.conferees.append(actual.center)
             elif actual.right is None:
                 actual.right = conferee
                 self.addConnection(actual, actual.right)
-                self.conferees.append(actual.right)
             else:
                 actual.outside = True
             return actual

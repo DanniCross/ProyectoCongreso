@@ -65,9 +65,14 @@ class GUI:
                     if cursor.colliderect(buttonAdd.rect):
                         self.son = True
                     elif self.son:
-                        for conferee in self.congress.conferees:
-                            if (conferee.rect.x < pygame.mouse.get_pos()[0] < conferee.rect.right and conferee.rect.y < pygame.mouse.get_pos()[1] < conferee.rect.bottom):
-                                buttonAdd.add(self.congress, conferee, randint(1, 4), 0, json.Read())
+                        for connect in self.congress.connections:
+                            if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right 
+                                and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
+                                buttonAdd.add(self.congress, connect.c1, randint(1, 4), 0, json.Read())
+                                break
+                            elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
+                                  and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
+                                buttonAdd.add(self.congress, connect.c2, randint(1, 4), 0, json.Read())
                                 break
                         self.son = False
                     elif cursor.colliderect(buttonDelete.rect):
@@ -115,17 +120,9 @@ class GUI:
             pygame.draw.line(screen, (0, 0, 0), (conect.c1.x + 12,
                                                  conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)  
 
-    """def outside(self, parent):
-        Advice = Tk()
-        Advice.title("ADVICE")
-        Advice.geometry(
-           f"300x100+{int(self.screen_size()[0]/2) - 165}+{int(self.screen_size()[1]/2) - 90}")
-        Advice.overrideredirect(1)
-
-        Advice.mainloop()"""
-    
     def outside(self, parent):
         Tk().withdraw()
-        if mb.showinfo("ADVICE", f"The conferee {parent.name} already has the maximum number of sons, so, it's not possible add more."):
+        if mb.showinfo("ADVICE", 
+            f"The conferee {parent.name} already has the maximum number of sons, so, it's not possible add more."):
             Tk().destroy()
     
