@@ -102,6 +102,12 @@ class GUI:
             screen.blit((font.render(f"{self.congress.levelMax}", True, (0, 0, 0))), (120, 50))
             screen.blit((fontBold.render("Height:", True, (0, 0, 0))), (15, 75))
             screen.blit((font.render(f"{self.congress.height}", True, (0, 0, 0))), (90, 75))
+            screen.blit((fontBold.render("Complete Tree:", True, (0, 0, 0))), (15, 100))
+            screen.blit((font.render("", True, (0, 0, 0))), (155, 100))
+            screen.blit((fontBold.render("Full Tree:", True, (0, 0, 0))), (15, 125))
+            screen.blit((font.render("", True, (0, 0, 0))), (105, 125))
+            screen.blit((fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
+            screen.blit((font.render("", True, (0, 0, 0))), (15, 175))
             self.draw_conect(screen, self.congress.connections)
             self.draw_congress(screen, self.congress.root,Red, Blue, Green, Yellow)
             pygame.display.update()
@@ -142,6 +148,5 @@ class GUI:
     # Emerging message which is show in case the number of childrens is exceeded.
     def outside(self, parent):
         Tk().withdraw()
-        if mb.showinfo("ADVICE", 
-            f"The conferee {parent.name} already has the maximum number of sons, so, it's not possible add more."):
+        if mb.showinfo("ADVICE", f"The conferee {parent.name} already has the maximum number of political sons, so, it's not possible add more."):
             Tk().destroy()
