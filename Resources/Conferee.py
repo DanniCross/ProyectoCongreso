@@ -1,14 +1,19 @@
-class Conferee():
+from pygame import Rect
 
-    def __init__(self, party, idpos, id, name, x, y):
+
+# Class for create the conferee object.
+class Conferee:
+
+    def __init__(self, party, id, name):
         self.left = None
         self.center = None
         self.right = None
         self.party = party
-        self.idpos = idpos
         self.id = id
         self.name = name
-        self.x = x
-        self.y = y
-        self.outside = False
+        self.x = 0
+        self.y = 0
+        self.outside = False # This parameter indicate if the node exceeds or not the maximun number of children.
         self.adjacent = []
+        self.rect = Rect(0, 0, 30, 30)
+        self.level = 0

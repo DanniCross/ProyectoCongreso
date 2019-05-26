@@ -1,22 +1,25 @@
 import pygame
-import sys
 import subprocess
-from Views.button import Boton
-from Views.cursor import Cursor
-from random import random
 from tkinter import *
 from tkinter import messagebox as mb
-pygame.init()
+from Views.cursor import Cursor
+from Views.button import ButtonP
+from random import randint
+from Json.JSONN import JSON2
+pygame.init() # Pygame initialization.
 
 
+# Graphical user interface class.
 class GUI:
 
     def __init__(self, congress):
-        self.congress = congress
+        self.congress = congress # Entry of the congress class to the GUI init.
         self.font = None
-        self.cursor = Cursor()
-        self.draw()
+        self.cursor = Cursor() # Called to the Cursor class for recognize the mouse with pygame.
+        self.draw() # Called to the draw method where is the GUI code.
+        self.son = False
 
+    # Method that returns the screen size in Linux.
     def screen_size(self):
         size = (None, None)
         args = ["xrandr", "-q", "-d", ":0"]
@@ -29,15 +32,20 @@ class GUI:
         return size
 
     def draw(self):
+        json = JSON2()
         cursor = Cursor()
-        screen = pygame.display.set_mode(self.screen_size())
-        pygame.display.set_caption("Congress")
+        screen = pygame.display.set_mode(self.screen_size()) # Window size defnition.
+        pygame.display.set_caption("Congress") 
 
-        # fonts
+        # fonts.
         self.font = pygame.font.SysFont("Arial Narrow", 20)
+        fontIn = pygame.font.SysFont("Arial Narrow", 30)
+        fontBold = pygame.font.SysFont("Arial Narrow", 25)
+        fontBold.set_bold(1)
+        font = pygame.font.SysFont("Arial Narrow", 25)
         add = self.font.render("Add Node", True, (255, 255, 255))
 
-        # Load images
+        # Load images.
         Red = pygame.image.load("Imgs/red.png")
         Blue = pygame.image.load("Imgs/blue.png")
         Yellow = pygame.image.load("Imgs/yellow.png")
@@ -45,36 +53,66 @@ class GUI:
         buttonUp = pygame.image.load("Imgs/ButtonUp.png")
         buttonDown = pygame.image.load("Imgs/ButtonDown.png")
 
-        # Transform Images
+        # Transform Images.
         Red = pygame.transform.scale(Red, (30, 30))
         Blue = pygame.transform.scale(Blue, (30, 30))
         Yellow = pygame.transform.scale(Yellow, (30, 30))
         Green = pygame.transform.scale(Green, (30, 30))
 
-        # buttons
-        buttonAdd = Boton(buttonUp, buttonDown, 100, 600)
+        # buttons.
+        buttonAdd = ButtonP(buttonUp, buttonDown, 100, 650)
+        buttonDelete = ButtonP(buttonUp, buttonDown, 200, 650)
 
+        # Loop that allows the pygame window operation.
         while True:
+            # With this loop we can get events in the pygame interface.
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                # Here we get the mouse events
+                if event.type is pygame.MOUSEBUTTONDOWN:
+                    # Here we evaluate if the cursor is on a button.
                     if cursor.colliderect(buttonAdd.rect):
-                        buttonAdd.add(self.congress, ran, 13, "jose")
-
+                        self.son = True
+                    elif self.son:
+                        for connect in self.congress.connections:
+                            # Here we evaluate the mouse position for can add and draw new nodes.
+                            if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right 
+                                    and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
+                                buttonAdd.add(self.congress, connect.c1, randint(1, 4), 0, json.Read())
+                                break
+                            elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
+                                    and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
+                                buttonAdd.add(self.congress, connect.c2, randint(1, 4), 0, json.Read())
+                                break
+                        self.son = False
+                    elif cursor.colliderect(buttonDelete.rect):
+                        buttonDelete.delete(self.congress, randint(1, 30))
+                # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            screen.fill((125, 70, 200))
+            screen.fill((125, 70, 200)) # Window color.
+            cursor.update() # update of the cursor position.
+            buttonAdd.update(screen, cursor, add) # update of the button image.
+
+            # Drawings on screen.
+            pygame.draw.rect(screen, (0, 0, 0), (0, 0, 200, 240))
+            pygame.draw.rect(screen, (255, 255, 255), (10, 10, 180, 220))
+            screen.blit((fontIn.render("INFO", True, (0, 0, 0))), (77, 15))
+            screen.blit((fontBold.render("N° Levels:", True, (0, 0, 0))), (15, 50))
+            screen.blit((font.render(f"{self.congress.levelMax}", True, (0, 0, 0))), (120, 50))
+            screen.blit((fontBold.render("Height:", True, (0, 0, 0))), (15, 75))
+            screen.blit((font.render(f"{self.congress.height}", True, (0, 0, 0))), (90, 75))
+            screen.blit((fontBold.render("Complete Tree:", True, (0, 0, 0))), (15, 100))
+            screen.blit((font.render("", True, (0, 0, 0))), (155, 100))
+            screen.blit((fontBold.render("Full Tree:", True, (0, 0, 0))), (15, 125))
+            screen.blit((font.render("", True, (0, 0, 0))), (105, 125))
+            screen.blit((fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
+            screen.blit((font.render("", True, (0, 0, 0))), (15, 175))
             self.draw_conect(screen, self.congress.connections)
-            self.draw_congress(screen, self.congress.root, Red, Blue, Green, Yellow)
-
-            cursor.update()
-            buttonAdd.update(screen, cursor, add)
+            self.draw_congress(screen, self.congress.root,Red, Blue, Green, Yellow)
             pygame.display.update()
-            #boton2.update(ventana, cursor, agregar2)
-            #boton3.update(ventana, cursor, agregar3)
-            #boton4.update(ventana, cursor, agregar4)
-            #boton5.update(ventana, cursor, agregar5)
 
+    # Method that allow draw the nodes.
     def draw_congress(self, screen, parent, Red, Blue, Green, Yellow):
         if parent is None:
             return
@@ -92,23 +130,23 @@ class GUI:
                 f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         elif parent.party == 4:
             screen.blit(Yellow, (parent.x, parent.y))
-            screen.blit((self.font.render(f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+            screen.blit((self.font.render(
+                f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         if parent.outside:
             parent.outside = False
-            self.outside(parent)           
+            self.outside(parent)
         self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow)
         self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow)
 
+    # Method that allow draw the connections between the nodes.
     def draw_conect(self, screen, connections):
         for conect in connections:
             pygame.draw.line(screen, (0, 0, 0), (conect.c1.x + 12,
-                                                 conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)
+                                                 conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)  
 
+    # Emerging message which is show in case the number of childrens is exceeded.
     def outside(self, parent):
-        screen = Tk()
-        screen.withdraw()
-        if mb.showinfo("ALERT", f"The conferee {parent.name} has above 3 political sons, so, only 3 will be added."):
-            Tk().quit()
-        
-        
+        Tk().withdraw()
+        if mb.showinfo("ADVICE", f"The conferee {parent.name} already has the maximum number of political sons, so, it's not possible add more."):
+            Tk().destroy()
