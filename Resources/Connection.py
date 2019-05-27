@@ -1,3 +1,4 @@
+# Class that create the connection object for each pair of nodes.
 class Connection:
 
     def __init__(self, c1, c2):

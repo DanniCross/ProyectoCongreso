@@ -1,6 +1,6 @@
 from pygame import Color
 
-# Color definitions
+# Color definitions.
 NAVY = Color("#001f3f")
 BLUE = Color("#0074D9")
 AQUA = Color("#7FDBFF")

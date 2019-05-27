@@ -1,8 +1,8 @@
 from .Conferee import Conferee
 from .Connection import Connection
-from random import *
 
 
+# Class where the tree is created.
 class Congress:
 
     def __init__(self):
@@ -10,19 +10,23 @@ class Congress:
         self.max = 0
         self.parties = []
         self.connections = []
-        self.conferees = []
+        self.levelMax = 0
+        self.height = 0
+        self.Type = ""
 
+    # This method allows add the root and new nodes to the tree.
     def add(self, parent, party, id, name):
-        newconferee = Conferee(party, 0, id, name, 0, 0)
+        newconferee = Conferee(party, id, name)
         if self.root is None:
             self.root = newconferee
-            self.conferees.append(self.root)
         else:
             self.max += 1
             newconferee.id = self.max
             self.root = self.addNode(self.root, parent, newconferee)
             self.set_position(self.root, 0, None, 0)
+            self.level(self.root, 0)
 
+    # With this method the new nodes are added in one position (left, center or right).
     def addNode(self, actual, parent, conferee):
         if actual is None:
             return actual
@@ -30,15 +34,12 @@ class Congress:
             if actual.left is None:
                 actual.left = conferee
                 self.addConnection(actual, actual.left)
-                self.conferees.append(actual.left)
             elif actual.center is None:
                 actual.center = conferee
                 self.addConnection(actual, actual.center)
-                self.conferees.append(actual.center)
             elif actual.right is None:
                 actual.right = conferee
                 self.addConnection(actual, actual.right)
-                self.conferees.append(actual.right)
             else:
                 actual.outside = True
             return actual
@@ -70,6 +71,7 @@ class Congress:
                 state = self.__deleteNode(node.right, conferee)
         return state
 
+    # This methos give the connections between the nodes.
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)
         conAux = Connection(c2, c1)
@@ -79,6 +81,7 @@ class Congress:
         c1.adjacent.append(c2)
         c2.adjacent.append(c1)
 
+    # With this method the screen position of each node is given.
     def set_position(self, current, i, previous, j):
         if current is not None:
             if i == 0:
@@ -108,3 +111,15 @@ class Congress:
             self.set_position(current.left, 1, previous, j + 70)
             self.set_position(current.center, 2, previous, j + 70)
             self.set_position(current.right, 3, previous, j + 70)
+    
+    # This method allows calculate the level and the height of the tree.
+    def level(self, parent, i):
+        if parent is None:
+            return
+        parent.level = i
+        if parent.level > self.levelMax:
+            self.levelMax = parent.level
+            self.height = self.levelMax + 1
+        self.level(parent.left, i + 1)
+        self.level(parent.center, i + 1)
+        self.level(parent.right, i + 1)
