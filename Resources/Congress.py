@@ -33,12 +33,15 @@ class Congress:
         if actual == parent:
             if actual.left is None:
                 actual.left = conferee
+                actual.left.parent = actual
                 self.addConnection(actual, actual.left)
             elif actual.center is None:
                 actual.center = conferee
+                actual.center.parent = actual
                 self.addConnection(actual, actual.center)
             elif actual.right is None:
                 actual.right = conferee
+                actual.right.parent = actual
                 self.addConnection(actual, actual.right)
             else:
                 actual.outside = True
