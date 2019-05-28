@@ -118,8 +118,8 @@ class Congress:
             return
         parent.level = i
         if parent.level > self.levelMax:
-            self.levelMax = parent.level
-            self.height = self.levelMax + 1
+            self.levelMax = parent.level + 1
+            self.height = self.levelMax
         self.level(parent.left, i + 1)
         self.level(parent.center, i + 1)
         self.level(parent.right, i + 1)
