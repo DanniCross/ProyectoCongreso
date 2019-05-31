@@ -126,3 +126,50 @@ class Congress:
         self.level(parent.left, i + 1)
         self.level(parent.center, i + 1)
         self.level(parent.right, i + 1)
+    
+    def Tours(self):
+        conferees = [self.root]
+        print("*Width")
+        self.__width(conferees)
+        print("\n\n*Preorder")
+        self.__preorder(self.root)
+        print("\n\n*Inorder")
+        self.__inorder(self.root)
+        print("\n\n*Posorder")
+        self.__posorder(self.root)
+    
+    def __width(self, conferees):
+        if len(conferees) == 0:
+            return
+        print(f" - {conferees[0].name}", end="")
+        if conferees[0].left is not None:
+            conferees.append(conferees[0].left)
+        if conferees[0].center is not None:
+            conferees.append(conferees[0].center)
+        if conferees[0].right is not None:
+            conferees.apend(conferees[0].right)
+        self.__width(conferees)
+    
+    def __preorder(self, parent):
+        if parent is None:
+            return
+        print(f" - {parent.name}", end="")
+        self.__preorder(parent.left)
+        self.__preorder(parent.center)
+        self.__preorder(parent.right)
+
+    def __inorder(self, parent):
+        if parent is None:
+            return
+        self.__preorder(parent.left)
+        print(f" - {parent.name}", end="")
+        self.__preorder(parent.center)
+        self.__preorder(parent.right)
+
+    def __posorder(self, parent):
+        if parent is None:
+            return
+        self.__preorder(parent.left)
+        self.__preorder(parent.right)
+        self.__preorder(parent.center)
+        print(f" - {parent.name}", end="")

@@ -18,13 +18,13 @@ class JSON:
         for party in data['party']:
             color = party['color']
             if color == "red":
-                self.color = (255, 0, 0)
+                self.color = "Imgs/red.png"
             elif color == "blue":
-                self.color = (0, 255, 0)
+                self.color = "Imgs/blue.png"
             elif color == "green":
-                self.color = (0, 0, 255)
+                self.color = "Imgs/green.png"
             else:
-                self.color = (255, 255, 0)
+                self.color = "Imgs/yellow.png"
             par = Party(int(party['id']), party['name'],
                         int(party['leader']), self.color)
             self.congress.parties.append(par)
