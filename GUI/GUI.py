@@ -1,5 +1,7 @@
 import pygame
 import subprocess
+import os
+import ctypes
 from tkinter import *
 from tkinter import messagebox as mb
 from Views.cursor import Cursor
@@ -30,12 +32,23 @@ class GUI:
                 if "Screen" in line:
                     size = (int(line.split()[7]), int(line.split()[9][:-1]))
         return size
+    
+    def screen_sizeW(self):
+        self.n = 0
+        user32 = ctypes.windll.user32
+        user32.SetProcessDPIAware()
+        ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+        size = (ancho, alto)
+        return size
 
     def draw(self):
         json = JSON2()
         cursor = Cursor()
-        screen = pygame.display.set_mode(self.screen_size()) # Window size defnition.
-        pygame.display.set_caption("Congress") 
+        if os.name is "posix":
+            screen = pygame.display.set_mode(self.screen_size())  # Window size defnition.
+        else:
+            screen = pygame.display.set_mode(self.screen_sizeW(), pygame.RESIZABLE)
+        pygame.display.set_caption("Congress")
 
         # fonts.
         self.font = pygame.font.SysFont("Arial Narrow", 20)
@@ -46,12 +59,20 @@ class GUI:
         add = self.font.render("Add Node", True, (255, 255, 255))
 
         # Load images.
-        Red = pygame.image.load("Imgs/red.png")
-        Blue = pygame.image.load("Imgs/blue.png")
-        Yellow = pygame.image.load("Imgs/yellow.png")
-        Green = pygame.image.load("Imgs/green.png")
-        buttonUp = pygame.image.load("Imgs/ButtonUp.png")
-        buttonDown = pygame.image.load("Imgs/ButtonDown.png")
+        if os.name is "posix":
+            Red = pygame.image.load("Imgs/red.png")
+            Blue = pygame.image.load("Imgs/blue.png")
+            Yellow = pygame.image.load("Imgs/yellow.png")
+            Green = pygame.image.load("Imgs/green.png")
+            buttonUp = pygame.image.load("Imgs/ButtonUp.png")
+            buttonDown = pygame.image.load("Imgs/ButtonDown.png")
+        else:
+            Red = pygame.image.load("Imgs\\red.png")
+            Blue = pygame.image.load("Imgs\\blue.png")
+            Yellow = pygame.image.load("Imgs\\yellow.png")
+            Green = pygame.image.load("Imgs\\green.png")
+            buttonUp = pygame.image.load("Imgs\\ButtonUp.png")
+            buttonDown = pygame.image.load("Imgs\\ButtonDown.png")
 
         # Transform Images.
         Red = pygame.transform.scale(Red, (30, 30))

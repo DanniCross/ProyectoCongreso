@@ -2,6 +2,7 @@ from Resources.Congress import Congress
 from Resources.Conferee import Conferee
 from Resources.Party import Party
 import json
+import os
 
 
 # Class for reading the json file with the data of the tree.
@@ -10,10 +11,15 @@ class JSON:
     def __init__(self):
         self.color = None
         self.congress = Congress()
+        self.file = ""
 
     def Read(self):
-        with open("Json/format.json") as file:
-            data = json.load(file)
+        if os.name is "posix":
+            file = "Json/format.json"
+        else:
+            file = "Json\\format.json"
+        with open(file) as jfile:
+            data = json.load(jfile)
 
         for party in data['party']:
             color = party['color']
