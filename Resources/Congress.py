@@ -33,12 +33,15 @@ class Congress:
         if actual == parent:
             if actual.left is None:
                 actual.left = conferee
+                actual.left.parent = actual
                 self.addConnection(actual, actual.left)
             elif actual.center is None:
                 actual.center = conferee
+                actual.center.parent = actual
                 self.addConnection(actual, actual.center)
             elif actual.right is None:
                 actual.right = conferee
+                actual.right.parent = actual
                 self.addConnection(actual, actual.right)
             else:
                 actual.outside = True
@@ -48,20 +51,28 @@ class Congress:
         actual.right = self.addNode(actual.right, parent, conferee)
         return actual
 
-    # This method allows expel a conferee of the congress.
-    def deleteNode(self, conferee, id):
-        if conferee.left is not None and conferee.right is not None or conferee.center is not None:
-            conferee = conferee.left
-            if conferee.left.left is not None or conferee.left.center is not None or conferee.left.right is not None:
-                conferee.right.left = conferee.left.left
-                conferee.right.center = conferee.left.center
-                conferee.right.right = conferee.left.right
-        elif conferee.left is not None and conferee.right.left is None and conferee.right.center is None and conferee.right.right is None:
-            conferee = conferee.left
-            if conferee.left.left is not None or conferee.left.center is not None or conferee.left.right is not None:
-                conferee.left = conferee.left.left
-                conferee.center = conferee.left.center
-                conferee.right = conferee.left.right
+    # TODO
+    def deleteNode(self, conferee):
+        if conferee != none:
+            return self.__deleteNode(self.root, conferee)
+        else:
+            return False
+
+    def __deleteNode(self, node, conferee):
+        if node == None:
+            return False
+        if node.left != None and node.left == conferee:
+            pass
+        elif node.center != None and node.center == conferee:
+            pass
+        else:
+            pass
+        state = self.__deleteNode(node.left, conferee)
+        if state != True:
+            state = self.__deleteNode(node.center, conferee)
+            if state != True:
+                state = self.__deleteNode(node.right, conferee)
+        return state
 
     # This methos give the connections between the nodes.
     def addConnection(self, c1, c2):
@@ -110,8 +121,55 @@ class Congress:
             return
         parent.level = i
         if parent.level > self.levelMax:
-            self.levelMax = parent.level
-            self.height = self.levelMax + 1
+            self.levelMax = parent.level + 1
+            self.height = self.levelMax
         self.level(parent.left, i + 1)
         self.level(parent.center, i + 1)
         self.level(parent.right, i + 1)
+    
+    def Tours(self):
+        conferees = [self.root]
+        print("*Width")
+        self.__width(conferees)
+        print("\n\n*Preorder")
+        self.__preorder(self.root)
+        print("\n\n*Inorder")
+        self.__inorder(self.root)
+        print("\n\n*Posorder")
+        self.__posorder(self.root)
+    
+    def __width(self, conferees):
+        if len(conferees) == 0:
+            return
+        print(f" - {conferees[0].name}", end="")
+        if conferees[0].left is not None:
+            conferees.append(conferees[0].left)
+        if conferees[0].center is not None:
+            conferees.append(conferees[0].center)
+        if conferees[0].right is not None:
+            conferees.apend(conferees[0].right)
+        self.__width(conferees)
+    
+    def __preorder(self, parent):
+        if parent is None:
+            return
+        print(f" - {parent.name}", end="")
+        self.__preorder(parent.left)
+        self.__preorder(parent.center)
+        self.__preorder(parent.right)
+
+    def __inorder(self, parent):
+        if parent is None:
+            return
+        self.__preorder(parent.left)
+        print(f" - {parent.name}", end="")
+        self.__preorder(parent.center)
+        self.__preorder(parent.right)
+
+    def __posorder(self, parent):
+        if parent is None:
+            return
+        self.__preorder(parent.left)
+        self.__preorder(parent.right)
+        self.__preorder(parent.center)
+        print(f" - {parent.name}", end="")

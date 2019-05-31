@@ -8,6 +8,7 @@ class Conferee:
         self.left = None
         self.center = None
         self.right = None
+        self.parent = None
         self.party = party
         self.id = id
         self.name = name

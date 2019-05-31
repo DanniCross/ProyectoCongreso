@@ -60,25 +60,11 @@ class GUI:
 
         # Load images.
         if os.name is "posix":
-            Red = pygame.image.load("Imgs/red.png")
-            Blue = pygame.image.load("Imgs/blue.png")
-            Yellow = pygame.image.load("Imgs/yellow.png")
-            Green = pygame.image.load("Imgs/green.png")
             buttonUp = pygame.image.load("Imgs/ButtonUp.png")
             buttonDown = pygame.image.load("Imgs/ButtonDown.png")
         else:
-            Red = pygame.image.load("Imgs\\red.png")
-            Blue = pygame.image.load("Imgs\\blue.png")
-            Yellow = pygame.image.load("Imgs\\yellow.png")
-            Green = pygame.image.load("Imgs\\green.png")
             buttonUp = pygame.image.load("Imgs\\ButtonUp.png")
             buttonDown = pygame.image.load("Imgs\\ButtonDown.png")
-
-        # Transform Images.
-        Red = pygame.transform.scale(Red, (30, 30))
-        Blue = pygame.transform.scale(Blue, (30, 30))
-        Yellow = pygame.transform.scale(Yellow, (30, 30))
-        Green = pygame.transform.scale(Green, (30, 30))
 
         # buttons.
         buttonAdd = ButtonP(buttonUp, buttonDown, 100, 650)
@@ -130,35 +116,24 @@ class GUI:
             screen.blit((fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
             screen.blit((font.render("", True, (0, 0, 0))), (15, 175))
             self.draw_conect(screen, self.congress.connections)
-            self.draw_congress(screen, self.congress.root,Red, Blue, Green, Yellow)
+            self.draw_congress(screen, self.congress.root)
             pygame.display.update()
 
     # Method that allow draw the nodes.
-    def draw_congress(self, screen, parent, Red, Blue, Green, Yellow):
+    def draw_congress(self, screen, parent):
         if parent is None:
             return
-        if parent.party == 1:
-            screen.blit(Red, (parent.x, parent.y))
-            screen.blit((self.font.render(
-                f"  {parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
-        elif parent.party == 2:
-            screen.blit(Blue, (parent.x, parent.y))
-            screen.blit((self.font.render(
-                f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
-        elif parent.party == 3:
-            screen.blit(Green, (parent.x, parent.y))
-            screen.blit((self.font.render(
-                f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
-        elif parent.party == 4:
-            screen.blit(Yellow, (parent.x, parent.y))
-            screen.blit((self.font.render(
-                f"{parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+        for party in self.congress.parties:
+            if parent.party is party.id:
+                screen.blit(party.color, (parent.x, parent.y))
+                screen.blit((self.font.render(
+                    f"  {parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
         if parent.outside:
             parent.outside = False
             self.outside(parent)
-        self.draw_congress(screen, parent.left, Red, Blue, Green, Yellow)
-        self.draw_congress(screen, parent.center, Red, Blue, Green, Yellow)
-        self.draw_congress(screen, parent.right, Red, Blue, Green, Yellow)
+        self.draw_congress(screen, parent.left)
+        self.draw_congress(screen, parent.center)
+        self.draw_congress(screen, parent.right)
 
     # Method that allow draw the connections between the nodes.
     def draw_conect(self, screen, connections):

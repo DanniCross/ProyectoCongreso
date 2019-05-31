@@ -12,25 +12,28 @@ class JSON:
         self.color = None
         self.congress = Congress()
         self.file = ""
+        self.slash = ""
 
     def Read(self):
         if os.name is "posix":
             file = "Json/format.json"
+            self.slash = "/"
         else:
             file = "Json\\format.json"
+            self.slash = "\\"
         with open(file) as jfile:
             data = json.load(jfile)
 
         for party in data['party']:
             color = party['color']
             if color == "red":
-                self.color = (255, 0, 0)
+                self.color = f"Imgs{self.slash}red.png"
             elif color == "blue":
-                self.color = (0, 255, 0)
+                self.color = f"Imgs{self.slash}blue.png"
             elif color == "green":
-                self.color = (0, 0, 255)
+                self.color = f"Imgs{self.slash}green.png"
             else:
-                self.color = (255, 255, 0)
+                self.color = f"Imgs{self.slash}yellow.png"
             par = Party(int(party['id']), party['name'],
                         int(party['leader']), self.color)
             self.congress.parties.append(par)
@@ -52,6 +55,7 @@ class JSON:
 
             if parent.left is None:
                 parent.left = Conferee(int(conferee['party']), int(conferee['id']), conferee['name'])
+                parent.left.parent = parent
                 self.congress.addConnection(parent, parent.left)
                 if parent.left.id > self.congress.max:
                     self.congress.max = parent.left.id
@@ -64,6 +68,7 @@ class JSON:
 
             if parent.center is None:
                 parent.center = Conferee(int(conferee['party']), int(conferee['id']), conferee['name'])
+                parent.center.parent = parent
                 self.congress.addConnection(parent, parent.center)
                 if parent.center.id > self.congress.max:
                     self.congress.max = parent.center.id
@@ -76,6 +81,7 @@ class JSON:
 
             if parent.right is None:
                 parent.right = Conferee(int(conferee['party']), int(conferee['id']), conferee['name'])
+                parent.right.parent = parent
                 self.congress.addConnection(parent, parent.right)
                 if parent.right.id > self.congress.max:
                     self.congress.max = parent.right.id
