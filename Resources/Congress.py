@@ -28,7 +28,7 @@ class Congress:
             self.root = self.addNode(self.root, parent, newconferee)
             self.set_position(self.root, 0, None, 0)
             self.level(self.root, 0)
-            self.congress.weight += 1
+            self.weight += 1
             self.TypeDef()
 
     # With this method the new nodes are added in one position (left, center or right).
