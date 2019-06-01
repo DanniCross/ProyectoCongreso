@@ -42,6 +42,8 @@ class JSON:
         self.congress.set_position(self.congress.root, 0, None, 0)
         self.congress.level(self.congress.root, 0)
         self.congress.TypeDef()
+        way = [self.congress.root.id]
+        self.congress.longer_way(self.congress.root, way)
         return self.congress
 
     # Method that entry the file data in the tree

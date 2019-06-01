@@ -119,7 +119,7 @@ class GUI:
             screen.blit((fontBold.render("Full Tree:", True, (0, 0, 0))), (15, 125))
             screen.blit((font.render(f"{self.Full}", True, (0, 0, 0))), (105, 125))
             screen.blit((fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
-            screen.blit((font.render("", True, (0, 0, 0))), (15, 175))
+            screen.blit((font.render(f"{self.congress.way}", True, (0, 0, 0))), (15, 175))
             self.draw_conect(screen, self.congress.connections)
             self.draw_congress(screen, self.congress.root)
             pygame.display.update()

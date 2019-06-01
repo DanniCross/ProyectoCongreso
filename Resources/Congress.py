@@ -16,6 +16,7 @@ class Congress:
         self.Type = ""
         self.Full = False
         self.Complete = False
+        self.way = []
 
     # This method allows add the root and new nodes to the tree.
     def add(self, parent, party, id, name):
@@ -30,6 +31,8 @@ class Congress:
             self.level(self.root, 0)
             self.weight += 1
             self.TypeDef()
+            way = [self.root.id]
+            self.longer_way(self.root, way)
 
     # With this method the new nodes are added in one position (left, center or right).
     def addNode(self, actual, parent, conferee):
@@ -205,4 +208,20 @@ class Congress:
         conferees.remove(conferees[0])
         return self.__Type(conferees)
             
-            
+    def longer_way(self, parent, current):
+        if parent is None:
+            return
+        if parent is not self.root:
+            for i in range((len(current) - 1), -1, -1):
+                if parent.parent.id is current[i]:
+                    break
+                current.remove(current[i])
+            current.append(parent.id)
+        if len(self.way) < len(current):
+            self.way.clear()
+            for confer in current:
+                self.way.append(confer)
+        self.longer_way(parent.left, current)
+        self.longer_way(parent.center, current)
+        self.longer_way(parent.right, current)
+        
