@@ -20,6 +20,7 @@ class GUI:
         self.cursor = Cursor() # Called to the Cursor class for recognize the mouse with pygame.
         self.draw() # Called to the draw method where is the GUI code.
         self.son = False
+        self.slash = ""
 
     # Method that returns the screen size in Linux.
     def screen_size(self):
@@ -34,7 +35,6 @@ class GUI:
         return size
     
     def screen_sizeW(self):
-        self.n = 0
         user32 = ctypes.windll.user32
         user32.SetProcessDPIAware()
         ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
@@ -46,8 +46,10 @@ class GUI:
         cursor = Cursor()
         if os.name is "posix":
             screen = pygame.display.set_mode(self.screen_size())  # Window size defnition.
+            self.slash = "/"
         else:
             screen = pygame.display.set_mode(self.screen_sizeW(), pygame.RESIZABLE)
+            self.slash = "\\"
         pygame.display.set_caption("Congress")
 
         # fonts.
@@ -59,12 +61,8 @@ class GUI:
         add = self.font.render("Add Node", True, (255, 255, 255))
 
         # Load images.
-        if os.name is "posix":
-            buttonUp = pygame.image.load("Imgs/ButtonUp.png")
-            buttonDown = pygame.image.load("Imgs/ButtonDown.png")
-        else:
-            buttonUp = pygame.image.load("Imgs\\ButtonUp.png")
-            buttonDown = pygame.image.load("Imgs\\ButtonDown.png")
+        buttonUp = pygame.image.load(f"Imgs{self.slash}ButtonUp.png")
+        buttonDown = pygame.image.load(f"Imgs{self.slash}ButtonDown.png")
 
         # buttons.
         buttonAdd = ButtonP(buttonUp, buttonDown, 100, 650)
@@ -110,9 +108,9 @@ class GUI:
             screen.blit((fontBold.render("Height:", True, (0, 0, 0))), (15, 75))
             screen.blit((font.render(f"{self.congress.height}", True, (0, 0, 0))), (90, 75))
             screen.blit((fontBold.render("Complete Tree:", True, (0, 0, 0))), (15, 100))
-            screen.blit((font.render("", True, (0, 0, 0))), (155, 100))
+            screen.blit((font.render(f"{self.congress.Complete}", True, (0, 0, 0))), (155, 100))
             screen.blit((fontBold.render("Full Tree:", True, (0, 0, 0))), (15, 125))
-            screen.blit((font.render("", True, (0, 0, 0))), (105, 125))
+            screen.blit((font.render(f"{self.congress.Full}", True, (0, 0, 0))), (105, 125))
             screen.blit((fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
             screen.blit((font.render("", True, (0, 0, 0))), (15, 175))
             self.draw_conect(screen, self.congress.connections)
@@ -124,6 +122,8 @@ class GUI:
         if parent is None:
             return
         for party in self.congress.parties:
+            if parent.id is party.leader:
+                pygame.draw.circle(screen, (205, 164, 52), (parent.x + 15, parent.y), 10, 10)
             if parent.party is party.id:
                 screen.blit(party.color, (parent.x, parent.y))
                 screen.blit((self.font.render(
