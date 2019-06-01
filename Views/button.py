@@ -29,3 +29,14 @@ class ButtonP(pygame.sprite.Sprite):
     # Method for the delete button.
     def delete(self, congress):
         pass
+    
+    def verify_assitance(self, screen, congress, time, tour):
+        if tour == 1:
+            conferees = [congress.root]
+            congress.width(conferees, screen, time)
+        elif tour == 2:
+            congress.preorder(congress.root, screen, time)
+        elif tour == 3:
+            congress.inorder(congress.root, screen, time)
+        elif tour == 4:
+            congress.posorder(congress.root, screen, time)

@@ -1,5 +1,7 @@
 from .Conferee import Conferee
 from .Connection import Connection
+import pygame
+from time import sleep
 
 
 # Class where the tree is created.
@@ -17,6 +19,7 @@ class Congress:
         self.Full = False
         self.Complete = False
         self.way = []
+        self.wait = True
 
     # This method allows add the root and new nodes to the tree.
     def add(self, parent, party, id, name):
@@ -61,7 +64,7 @@ class Congress:
 
     # TODO
     def deleteNode(self, conferee):
-        if conferee != none:
+        if conferee != None:
             return self.__deleteNode(self.root, conferee)
         else:
             return False
@@ -146,10 +149,12 @@ class Congress:
         print("\n\n*Posorder")
         self.__posorder(self.root)
     
-    def __width(self, conferees):
+    def width(self, conferees, screen, time):
         if len(conferees) == 0:
-            return
-        print(f" - {conferees[0].name}", end="")
+            return   
+        pygame.draw.circle(screen, (255, 255, 255), (conferees[0].x + 15, conferees[0].y + 10), 15, 15)
+        pygame.display.update()
+        sleep(time)
         if conferees[0].left is not None:
             conferees.append(conferees[0].left)
         if conferees[0].center is not None:
@@ -157,31 +162,37 @@ class Congress:
         if conferees[0].right is not None:
             conferees.append(conferees[0].right)
         conferees.remove(conferees[0])
-        self.__width(conferees)
+        self.width(conferees, screen, time)
     
-    def __preorder(self, parent):
+    def preorder(self, parent, screen, time):
         if parent is None:
             return
-        print(f" - {parent.name}", end="")
-        self.__preorder(parent.left)
-        self.__preorder(parent.center)
-        self.__preorder(parent.right)
+        pygame.draw.circle(screen, (255, 255, 255), (parent.x + 15, parent.y + 10), 15, 15)
+        pygame.display.update()
+        sleep(time)
+        self.preorder(parent.left, screen, time)
+        self.preorder(parent.center, screen, time)
+        self.preorder(parent.right, screen, time)
 
-    def __inorder(self, parent):
+    def inorder(self, parent, screen, time):
         if parent is None:
             return
-        self.__preorder(parent.left)
-        print(f" - {parent.name}", end="")
-        self.__preorder(parent.center)
-        self.__preorder(parent.right)
+        self.inorder(parent.left, screen, time)
+        pygame.draw.circle(screen, (255, 255, 255), (parent.x + 15, parent.y + 10), 15, 15)
+        pygame.display.update()
+        sleep(time)
+        self.inorder(parent.center, screen, time)
+        self.inorder(parent.right, screen, time)
 
-    def __posorder(self, parent):
+    def posorder(self, parent, screen, time):
         if parent is None:
             return
-        self.__preorder(parent.left)
-        self.__preorder(parent.right)
-        self.__preorder(parent.center)
-        print(f" - {parent.name}", end="")
+        self.posorder(parent.left, screen, time)
+        self.posorder(parent.center, screen, time)
+        self.posorder(parent.right, screen, time)
+        pygame.draw.circle(screen, (255, 255, 255), (parent.x + 15, parent.y + 10), 15, 15)
+        pygame.display.update()
+        sleep(time)
 
     def TypeDef(self):
         conferees = [self.root]

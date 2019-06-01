@@ -4,6 +4,7 @@ import os
 import ctypes
 from tkinter import *
 from tkinter import messagebox as mb
+from tkinter import font as f
 from Views.cursor import Cursor
 from Views.button import ButtonP
 from random import randint
@@ -17,11 +18,11 @@ class GUI:
     def __init__(self, congress):
         self.congress = congress # Entry of the congress class to the GUI init.
         self.font = None
+        self.son = False
         self.Full = "No"
         self.Complete = "No"
         self.cursor = Cursor() # Called to the Cursor class for recognize the mouse with pygame.
         self.draw() # Called to the draw method where is the GUI code.
-        self.son = False
         self.slash = ""
 
     # Method that returns the screen size in Linux.
@@ -55,20 +56,24 @@ class GUI:
         pygame.display.set_caption("Congress")
 
         # fonts.
-        self.font = pygame.font.SysFont("Arial Narrow", 20)
-        fontIn = pygame.font.SysFont("Arial Narrow", 30)
-        fontBold = pygame.font.SysFont("Arial Narrow", 25)
+        self.font = pygame.font.SysFont("Times New Roman", 11)
+        fontIn = pygame.font.SysFont("Times New Roman", 25)
+        fontBold = pygame.font.SysFont("Times New Roman", 16)
         fontBold.set_bold(1)
-        font = pygame.font.SysFont("Arial Narrow", 25)
-        add = self.font.render("Add Node", True, (255, 255, 255))
+        font = pygame.font.SysFont("Times New Roman", 16)
+        verify = self.font.render("Verify assistance.", True, (255, 255, 255))
+        add = self.font.render("Enter new conferee.", True, (255, 255, 255))
 
         # Load images.
         buttonUp = pygame.image.load(f"Imgs{self.slash}ButtonUp.png")
         buttonDown = pygame.image.load(f"Imgs{self.slash}ButtonDown.png")
 
         # buttons.
-        buttonAdd = ButtonP(buttonUp, buttonDown, 100, 650)
+        buttonAdd = ButtonP(pygame.transform.scale(buttonUp, (140, 30)), 
+                            pygame.transform.scale(buttonDown, (140, 30)), 100, 650)
         buttonDelete = ButtonP(buttonUp, buttonDown, 200, 650)
+        BtnPresence = ButtonP(pygame.transform.scale(buttonUp, (130, 30)),
+                              pygame.transform.scale(buttonDown, (130, 30)), 260, 650)
 
         # Loop that allows the pygame window operation.
         while True:
@@ -93,6 +98,29 @@ class GUI:
                         self.son = False
                     elif cursor.colliderect(buttonDelete.rect):
                         buttonDelete.delete(self.congress, randint(1, 30))
+                    elif cursor.colliderect(BtnPresence.rect):
+                        screenTK = Tk()
+                        size = self.screen_size()
+                        screenTK.geometry(f"430x110+{int(size[0]/2) - 230}+{int(size[1]/2) - 100}")
+                        screenTK.title("Verify assitance")
+                        tour = IntVar()
+                        time = IntVar(value = 1)
+                        textT = StringVar(value = "Choose the time between one call and another.")
+                        textB = StringVar(value = "Choose the way to check assitance.")
+                        labelTime = Label(screenTK, textvariable = textT).place(x = 5, y = 5)
+                        time_field = Spinbox(screenTK, from_= 1, to = 10, 
+                                        wrap = True, textvariable = time).place(x = 5, y = 25, width = 35)
+                        labelTours = Label(screenTK, textvariable = textB).place(x = 5, y = 50)
+                        Button(screenTK, text = "Width tour", 
+                                command = lambda: self.tour(screenTK, tour, 1)).place(x = 5, y = 70)
+                        Button(screenTK, text = "Preorder tour", 
+                                command = lambda: self.tour(screenTK, tour, 2)).place(x = 100, y = 70)
+                        Button(screenTK, text = "Inorder tour", 
+                                command = lambda: self.tour(screenTK, tour, 3)).place(x = 213, y = 70)
+                        Button(screenTK, text = "Posorder tour", 
+                                command = lambda: self.tour(screenTK, tour, 4)).place(x = 320, y = 70)
+                        screenTK.mainloop()
+                        BtnPresence.verify_assitance(screen, self.congress, time.get(), tour.get())
                 # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:
                     pygame.quit()
@@ -100,6 +128,7 @@ class GUI:
             screen.fill((125, 70, 200)) # Window color.
             cursor.update() # update of the cursor position.
             buttonAdd.update(screen, cursor, add) # update of the button image.
+            BtnPresence.update(screen, cursor, verify)
 
             # Drawings on screen.
             if self.congress.Full:
@@ -134,7 +163,7 @@ class GUI:
             if parent.party is party.id:
                 screen.blit(party.color, (parent.x, parent.y))
                 screen.blit((self.font.render(
-                    f"  {parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 20, parent.y + 30))
+                    f"  {parent.id}.{parent.name}", True, (255, 255, 255))), (parent.x - 30, parent.y + 30))
         if parent.outside:
             parent.outside = False
             self.outside(parent)
@@ -153,3 +182,8 @@ class GUI:
         Tk().withdraw()
         if mb.showinfo("ADVICE", f"The conferee {parent.name} already has the maximum number of political sons, so, it's not possible add more."):
             Tk().destroy()
+        
+    def tour(self, screen, tour, method):
+        tour.set(method)
+        screen.destroy()
+
