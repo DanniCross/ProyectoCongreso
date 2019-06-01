@@ -17,6 +17,8 @@ class GUI:
     def __init__(self, congress):
         self.congress = congress # Entry of the congress class to the GUI init.
         self.font = None
+        self.Full = "No"
+        self.Complete = "No"
         self.cursor = Cursor() # Called to the Cursor class for recognize the mouse with pygame.
         self.draw() # Called to the draw method where is the GUI code.
         self.son = False
@@ -100,6 +102,11 @@ class GUI:
             buttonAdd.update(screen, cursor, add) # update of the button image.
 
             # Drawings on screen.
+            if self.congress.Full:
+                self.Full = "Yes"
+                self.Complete = "Yes"
+            if self.congress.Complete:
+                self.Complete = "Yes"
             pygame.draw.rect(screen, (0, 0, 0), (0, 0, 200, 240))
             pygame.draw.rect(screen, (255, 255, 255), (10, 10, 180, 220))
             screen.blit((fontIn.render("INFO", True, (0, 0, 0))), (77, 15))
@@ -108,9 +115,9 @@ class GUI:
             screen.blit((fontBold.render("Height:", True, (0, 0, 0))), (15, 75))
             screen.blit((font.render(f"{self.congress.height}", True, (0, 0, 0))), (90, 75))
             screen.blit((fontBold.render("Complete Tree:", True, (0, 0, 0))), (15, 100))
-            screen.blit((font.render(f"{self.congress.Complete}", True, (0, 0, 0))), (155, 100))
+            screen.blit((font.render(f"{self.Complete}", True, (0, 0, 0))), (155, 100))
             screen.blit((fontBold.render("Full Tree:", True, (0, 0, 0))), (15, 125))
-            screen.blit((font.render(f"{self.congress.Full}", True, (0, 0, 0))), (105, 125))
+            screen.blit((font.render(f"{self.Full}", True, (0, 0, 0))), (105, 125))
             screen.blit((fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
             screen.blit((font.render("", True, (0, 0, 0))), (15, 175))
             self.draw_conect(screen, self.congress.connections)
