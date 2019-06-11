@@ -63,29 +63,51 @@ class Congress:
         return actual
 
     # TODO
-    def deleteNode(self, conferee):
-        if conferee != None:
-            return self.__deleteNode(self.root, conferee)
-        else:
-            return False
+    def deleteNode(self, conferee, parent):
+        if conferee is None:
+            return
+        if parent is conferee:
+            if conferee.left is conferee.center is conferee.right is None:
+                parent.parent = None
+                parent = None
+                return parent
+            elif parent.left is parent.center is None and parent.right is not None:
+                self.deletebranch1(parent, parent.right)
+            elif parent.left is parent.right is None and parent.center is not None:
+                self.deletebranch1(parent, parent.center)
+            elif parent.right is parent.center is None and parent.left is not None:
+                self.deletebranch1(parent, parent.left)
+            elif parent.left is None and parent.center is not None and parent.right is not None:
+                self.deletebranch2(parent, parent.center)
+            elif parent.center is None and parent.left is not None and parent.right is not None:
+                self.deletebranch2(parent, parent.left)
+            elif parent.right is None and parent.left is not None and parent.center is not None:
+                self.deletebranch2(parent, parent.left)
+            elif parent.right is not None and parent.left is not None and parent.center is not None:
+                self.deletebranch3(parent, parent.left)
 
-    def __deleteNode(self, node, conferee):
-        if node == None:
-            return False
-        if node.left != None and node.left == conferee:
-            pass
-        elif node.center != None and node.center == conferee:
-            pass
-        else:
-            pass
-        state = self.__deleteNode(node.left, conferee)
-        if state != True:
-            state = self.__deleteNode(node.center, conferee)
-            if state != True:
-                state = self.__deleteNode(node.right, conferee)
-        return state
+    def deletebranch1(self, parent, node):
+        if node is None:
+            return None
+        node.parent = parent.parent
+        parent = node
+        return parent
 
-    # This methos give the connections between the nodes.
+    def deletebranch2(self, parent, node):
+        if node is None:
+            return None
+        if node.left is node.center is node.right is None:
+            parent = node
+        elif node.left is not None and node.center is node.right is None:
+            parent = node
+        elif node.center is not None and node.left is node.right is None:
+            parent = node
+            node.left = node.center
+
+
+
+        # This methos give the connections between the nodes.
+
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)
         conAux = Connection(c2, c1)
@@ -125,7 +147,7 @@ class Congress:
             self.set_position(current.left, 1, previous, j + 70)
             self.set_position(current.center, 2, previous, j + 70)
             self.set_position(current.right, 3, previous, j + 70)
-    
+
     # This method allows calculate the level and the height of the tree.
     def level(self, parent, i):
         if parent is None:
@@ -137,7 +159,7 @@ class Congress:
         self.level(parent.left, i + 1)
         self.level(parent.center, i + 1)
         self.level(parent.right, i + 1)
-    
+
     def Tours(self):
         conferees = [self.root]
         print("*Width")
@@ -148,11 +170,12 @@ class Congress:
         self.__inorder(self.root)
         print("\n\n*Posorder")
         self.__posorder(self.root)
-    
+
     def width(self, conferees, screen, time):
         if len(conferees) == 0:
-            return   
-        pygame.draw.circle(screen, (255, 255, 255), (conferees[0].x + 15, conferees[0].y + 10), 15, 15)
+            return
+        pygame.draw.circle(screen, (255, 255, 255),
+                           (conferees[0].x + 15, conferees[0].y + 10), 15, 15)
         pygame.display.update()
         sleep(time)
         if conferees[0].left is not None:
@@ -163,11 +186,12 @@ class Congress:
             conferees.append(conferees[0].right)
         conferees.remove(conferees[0])
         self.width(conferees, screen, time)
-    
+
     def preorder(self, parent, screen, time):
         if parent is None:
             return
-        pygame.draw.circle(screen, (255, 255, 255), (parent.x + 15, parent.y + 10), 15, 15)
+        pygame.draw.circle(screen, (255, 255, 255),
+                           (parent.x + 15, parent.y + 10), 15, 15)
         pygame.display.update()
         sleep(time)
         self.preorder(parent.left, screen, time)
@@ -178,7 +202,8 @@ class Congress:
         if parent is None:
             return
         self.inorder(parent.left, screen, time)
-        pygame.draw.circle(screen, (255, 255, 255), (parent.x + 15, parent.y + 10), 15, 15)
+        pygame.draw.circle(screen, (255, 255, 255),
+                           (parent.x + 15, parent.y + 10), 15, 15)
         pygame.display.update()
         sleep(time)
         self.inorder(parent.center, screen, time)
@@ -190,7 +215,8 @@ class Congress:
         self.posorder(parent.left, screen, time)
         self.posorder(parent.center, screen, time)
         self.posorder(parent.right, screen, time)
-        pygame.draw.circle(screen, (255, 255, 255), (parent.x + 15, parent.y + 10), 15, 15)
+        pygame.draw.circle(screen, (255, 255, 255),
+                           (parent.x + 15, parent.y + 10), 15, 15)
         pygame.display.update()
         sleep(time)
 
@@ -209,8 +235,8 @@ class Congress:
         if conferees[0].level is (self.levelMax - 2):
             if conferees[0].left is None or conferees[0].center is None or conferees[0].right is None:
                 return "COMPLETE"
-        if (conferees[0].level is not (self.levelMax - 1) and 
-            (conferees[0].left is None or conferees[0].center is None or conferees[0].right is None)):
+        if (conferees[0].level is not (self.levelMax - 1) and
+                (conferees[0].left is None or conferees[0].center is None or conferees[0].right is None)):
             return "NO"
         if conferees[0].level is not (self.levelMax - 1):
             conferees.append(conferees[0].left)
@@ -218,7 +244,7 @@ class Congress:
             conferees.append(conferees[0].right)
         conferees.remove(conferees[0])
         return self.__Type(conferees)
-            
+
     def longer_way(self, parent, current):
         if parent is None:
             return
@@ -235,4 +261,3 @@ class Congress:
         self.longer_way(parent.left, current)
         self.longer_way(parent.center, current)
         self.longer_way(parent.right, current)
-        
