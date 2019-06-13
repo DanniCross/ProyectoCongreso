@@ -101,13 +101,50 @@ class Congress:
         elif node.left is not None and node.center is node.right is None:
             parent = node
         elif node.center is not None and node.left is node.right is None:
-            parent = node
-            node.left = node.center
+            if parent.center is node or parent.center is None:
+                parent = node
+            elif parent.center is not None:
+                node.left = node.center
+                node.center = None
+                parent = node
+        elif node.right is not None and node.left is node.center is None:
+            if parent.right is not None:
+                node.center = node.right
+                node.right = None
+                parent = node
+            else:
+                parent = node
+        elif node.left is not None and node.center is not None and node.right is None:
+            if parent.center is not None and parent.left is node:
+                node.right = node.center
+                node.center = None
+                parent = node
+            else:
+                parent = node
+        elif node.left is not None and node.right is not None and node.center is None:
+            if parent.right is not None:
+                node.center = node.right
+                node.right = None
+                parent = node
+            else:
+                parent = node
+        elif node.left is None and node.center is not None and node.right is not None:
+            if parent.left is node and parent.center is not None:
+                node.left = node.center
+                node.center = None
+                parent = node
+            else:
+                node.left = node.center
+                node.center = node.right
+                node.right = None
+                parent = node
+        elif node.left is not None and node.center is not None and node.right is not None:
+            pass
 
-
-
-        # This methos give the connections between the nodes.
-
+    def deletebranch3(parent, node):
+        pass
+  
+    # This methos give the connections between the nodes.
     def addConnection(self, c1, c2):
         conect = Connection(c1, c2)
         conAux = Connection(c2, c1)
