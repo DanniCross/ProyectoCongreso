@@ -9,20 +9,23 @@ from Views.cursor import Cursor
 from Views.button import ButtonP
 from random import randint
 from Json.JSONN import JSON2
-pygame.init() # Pygame initialization.
+pygame.init()  # Pygame initialization.
 
 
 # Graphical user interface class.
 class GUI:
 
     def __init__(self, congress):
-        self.congress = congress # Entry of the congress class to the GUI init.
+        # Entry of the congress class to the GUI init.
+        self.congress = congress
         self.font = None
         self.son = False
+        self.delete = False
         self.Full = "No"
         self.Complete = "No"
-        self.cursor = Cursor() # Called to the Cursor class for recognize the mouse with pygame.
-        self.draw() # Called to the draw method where is the GUI code.
+        # Called to the Cursor class for recognize the mouse with pygame.
+        self.cursor = Cursor()
+        self.draw()  # Called to the draw method where is the GUI code.
         self.slash = ""
 
     # Method that returns the screen size in Linux.
@@ -36,7 +39,7 @@ class GUI:
                 if "Screen" in line:
                     size = (int(line.split()[7]), int(line.split()[9][:-1]))
         return size
-    
+
     def screen_sizeW(self):
         user32 = ctypes.windll.user32
         user32.SetProcessDPIAware()
@@ -48,10 +51,12 @@ class GUI:
         json = JSON2()
         cursor = Cursor()
         if os.name is "posix":
-            screen = pygame.display.set_mode(self.screen_size())  # Window size defnition.
+            # Window size defnition.
+            screen = pygame.display.set_mode(self.screen_size())
             self.slash = "/"
         else:
-            screen = pygame.display.set_mode(self.screen_sizeW(), pygame.RESIZABLE)
+            screen = pygame.display.set_mode(
+                self.screen_sizeW(), pygame.RESIZABLE)
             self.slash = "\\"
         pygame.display.set_caption("Congress")
 
@@ -63,15 +68,17 @@ class GUI:
         font = pygame.font.SysFont("Times New Roman", 16)
         verify = self.font.render("Verify assistance.", True, (255, 255, 255))
         add = self.font.render("Enter new conferee.", True, (255, 255, 255))
+        delete = self.font.render("Suspend conferee.", True, (255, 255, 255))
 
         # Load images.
         buttonUp = pygame.image.load(f"Imgs{self.slash}ButtonUp.png")
         buttonDown = pygame.image.load(f"Imgs{self.slash}ButtonDown.png")
 
         # buttons.
-        buttonAdd = ButtonP(pygame.transform.scale(buttonUp, (140, 30)), 
+        buttonAdd = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
                             pygame.transform.scale(buttonDown, (140, 30)), 100, 650)
-        buttonDelete = ButtonP(buttonUp, buttonDown, 200, 650)
+        buttonDelete = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
+                               pygame.transform.scale(buttonDown, (140, 30)), 420, 650)
         BtnPresence = ButtonP(pygame.transform.scale(buttonUp, (130, 30)),
                               pygame.transform.scale(buttonDown, (130, 30)), 260, 650)
 
@@ -87,48 +94,71 @@ class GUI:
                     elif self.son:
                         for connect in self.congress.connections:
                             # Here we evaluate the mouse position for can add and draw new nodes.
-                            if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right 
+                            if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right
                                     and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
-                                buttonAdd.add(self.congress, connect.c1, randint(1, 4), 0, json.Read())
+                                buttonAdd.add(self.congress, connect.c1, randint(
+                                    1, 4), 0, json.Read())
                                 break
                             elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
                                     and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
-                                buttonAdd.add(self.congress, connect.c2, randint(1, 4), 0, json.Read())
+                                buttonAdd.add(self.congress, connect.c2, randint(
+                                    1, 4), 0, json.Read())
                                 break
                         self.son = False
                     elif cursor.colliderect(buttonDelete.rect):
-                        buttonDelete.delete(self.congress, randint(1, 30))
+                        self.delete = True
+                    elif self.delete:
+                        for connect in self.congress.connections:
+                            # Here we evaluate the mouse position for can add and delete nodes
+                            if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right
+                                    and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
+                                buttonDelete.delete(self.congress, connect.c1)
+                                break
+                            elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
+                                    and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
+                                buttonDelete.delete(self.congress, connect.c2)
+                                break
+                        self.delete = False
+
                     elif cursor.colliderect(BtnPresence.rect):
                         screenTK = Tk()
                         size = self.screen_size()
-                        screenTK.geometry(f"430x110+{int(size[0]/2) - 230}+{int(size[1]/2) - 100}")
+                        screenTK.geometry(
+                            f"430x110+{int(size[0]/2) - 230}+{int(size[1]/2) - 100}")
                         screenTK.title("Verify assitance")
                         tour = IntVar()
-                        time = IntVar(value = 1)
-                        textT = StringVar(value = "Choose the time between one call and another.")
-                        textB = StringVar(value = "Choose the way to check assitance.")
-                        labelTime = Label(screenTK, textvariable = textT).place(x = 5, y = 5)
-                        time_field = Spinbox(screenTK, from_= 1, to = 10, 
-                                        wrap = True, textvariable = time).place(x = 5, y = 25, width = 35)
-                        labelTours = Label(screenTK, textvariable = textB).place(x = 5, y = 50)
-                        Button(screenTK, text = "Width tour", 
-                                command = lambda: self.tour(screenTK, tour, 1)).place(x = 5, y = 70)
-                        Button(screenTK, text = "Preorder tour", 
-                                command = lambda: self.tour(screenTK, tour, 2)).place(x = 100, y = 70)
-                        Button(screenTK, text = "Inorder tour", 
-                                command = lambda: self.tour(screenTK, tour, 3)).place(x = 213, y = 70)
-                        Button(screenTK, text = "Posorder tour", 
-                                command = lambda: self.tour(screenTK, tour, 4)).place(x = 320, y = 70)
+                        time = IntVar(value=1)
+                        textT = StringVar(
+                            value="Choose the time between one call and another.")
+                        textB = StringVar(
+                            value="Choose the way to check assitance.")
+                        labelTime = Label(
+                            screenTK, textvariable=textT).place(x=5, y=5)
+                        time_field = Spinbox(screenTK, from_=1, to=10,
+                                             wrap=True, textvariable=time).place(x=5, y=25, width=35)
+                        labelTours = Label(
+                            screenTK, textvariable=textB).place(x=5, y=50)
+                        Button(screenTK, text="Width tour",
+                               command=lambda: self.tour(screenTK, tour, 1)).place(x=5, y=70)
+                        Button(screenTK, text="Preorder tour",
+                               command=lambda: self.tour(screenTK, tour, 2)).place(x=100, y=70)
+                        Button(screenTK, text="Inorder tour",
+                               command=lambda: self.tour(screenTK, tour, 3)).place(x=213, y=70)
+                        Button(screenTK, text="Posorder tour",
+                               command=lambda: self.tour(screenTK, tour, 4)).place(x=320, y=70)
                         screenTK.mainloop()
-                        BtnPresence.verify_assitance(screen, self.congress, time.get(), tour.get())
+                        BtnPresence.verify_assitance(
+                            screen, self.congress, time.get(), tour.get())
                 # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            screen.fill((125, 70, 200)) # Window color.
-            cursor.update() # update of the cursor position.
-            buttonAdd.update(screen, cursor, add) # update of the button image.
+            screen.fill((125, 70, 200))  # Window color.
+            cursor.update()  # update of the cursor position.
+            # update of the button image.
+            buttonAdd.update(screen, cursor, add)
             BtnPresence.update(screen, cursor, verify)
+            buttonDelete.update(screen, cursor, delete)
 
             # Drawings on screen.
             if self.congress.Full:
@@ -139,16 +169,26 @@ class GUI:
             pygame.draw.rect(screen, (0, 0, 0), (0, 0, 200, 240))
             pygame.draw.rect(screen, (255, 255, 255), (10, 10, 180, 220))
             screen.blit((fontIn.render("INFO", True, (0, 0, 0))), (77, 15))
-            screen.blit((fontBold.render("N° Levels:", True, (0, 0, 0))), (15, 50))
-            screen.blit((font.render(f"{self.congress.levelMax}", True, (0, 0, 0))), (120, 50))
-            screen.blit((fontBold.render("Height:", True, (0, 0, 0))), (15, 75))
-            screen.blit((font.render(f"{self.congress.height}", True, (0, 0, 0))), (90, 75))
-            screen.blit((fontBold.render("Complete Tree:", True, (0, 0, 0))), (15, 100))
-            screen.blit((font.render(f"{self.Complete}", True, (0, 0, 0))), (155, 100))
-            screen.blit((fontBold.render("Full Tree:", True, (0, 0, 0))), (15, 125))
-            screen.blit((font.render(f"{self.Full}", True, (0, 0, 0))), (105, 125))
-            screen.blit((fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
-            screen.blit((font.render(f"{self.congress.way}", True, (0, 0, 0))), (15, 175))
+            screen.blit(
+                (fontBold.render("N° Levels:", True, (0, 0, 0))), (15, 50))
+            screen.blit(
+                (font.render(f"{self.congress.levelMax}", True, (0, 0, 0))), (120, 50))
+            screen.blit(
+                (fontBold.render("Height:", True, (0, 0, 0))), (15, 75))
+            screen.blit(
+                (font.render(f"{self.congress.height}", True, (0, 0, 0))), (90, 75))
+            screen.blit(
+                (fontBold.render("Complete Tree:", True, (0, 0, 0))), (15, 100))
+            screen.blit(
+                (font.render(f"{self.Complete}", True, (0, 0, 0))), (155, 100))
+            screen.blit(
+                (fontBold.render("Full Tree:", True, (0, 0, 0))), (15, 125))
+            screen.blit(
+                (font.render(f"{self.Full}", True, (0, 0, 0))), (105, 125))
+            screen.blit(
+                (fontBold.render("Longer way:", True, (0, 0, 0))), (15, 150))
+            screen.blit(
+                (font.render(f"{self.congress.way}", True, (0, 0, 0))), (15, 175))
             self.draw_conect(screen, self.congress.connections)
             self.draw_congress(screen, self.congress.root)
             pygame.display.update()
@@ -159,7 +199,8 @@ class GUI:
             return
         for party in self.congress.parties:
             if parent.id is party.leader:
-                pygame.draw.circle(screen, (205, 164, 52), (parent.x + 15, parent.y), 10, 10)
+                pygame.draw.circle(screen, (205, 164, 52),
+                                   (parent.x + 15, parent.y), 10, 10)
             if parent.party is party.id:
                 screen.blit(party.color, (parent.x, parent.y))
                 screen.blit((self.font.render(
@@ -175,15 +216,14 @@ class GUI:
     def draw_conect(self, screen, connections):
         for conect in connections:
             pygame.draw.line(screen, (0, 0, 0), (conect.c1.x + 12,
-                                                 conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)  
+                                                 conect.c1.y + 15), (conect.c2.x + 12, conect.c2.y + 15), 10)
 
     # Emerging message which is show in case the number of childrens is exceeded.
     def outside(self, parent):
         Tk().withdraw()
         if mb.showinfo("ADVICE", f"The conferee {parent.name} already has the maximum number of political sons, so, it's not possible add more."):
             Tk().destroy()
-        
+
     def tour(self, screen, tour, method):
         tour.set(method)
         screen.destroy()
-

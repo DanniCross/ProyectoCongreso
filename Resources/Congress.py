@@ -64,7 +64,7 @@ class Congress:
 
     # TODO
     def deleteNode(self, conferee, parent):
-        if conferee is None:
+        if conferee is None or parent is None:
             return
         if parent is conferee:
             if conferee.left is conferee.center is conferee.right is None:
@@ -73,18 +73,29 @@ class Congress:
                 return parent
             elif parent.left is parent.center is None and parent.right is not None:
                 self.deletebranch1(parent, parent.right)
+                return parent
             elif parent.left is parent.right is None and parent.center is not None:
                 self.deletebranch1(parent, parent.center)
+                return parent
             elif parent.right is parent.center is None and parent.left is not None:
                 self.deletebranch1(parent, parent.left)
+                return parent
             elif parent.left is None and parent.center is not None and parent.right is not None:
                 self.deletebranch2(parent, parent.center)
+                return parent
             elif parent.center is None and parent.left is not None and parent.right is not None:
                 self.deletebranch2(parent, parent.left)
+                return parent
             elif parent.right is None and parent.left is not None and parent.center is not None:
                 self.deletebranch2(parent, parent.left)
+                return parent
             elif parent.right is not None and parent.left is not None and parent.center is not None:
                 self.deletebranch3(parent, parent.left)
+                return parent
+        parent.left = self.deleteNode(conferee, parent.left)
+        parent.center = self.deleteNode(conferee, parent.center)
+        parent.right = self.deleteNode(conferee, parent.right)
+        return parent
 
     def deletebranch1(self, parent, node):
         if node is None:
