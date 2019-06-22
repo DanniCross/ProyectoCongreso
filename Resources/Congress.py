@@ -58,7 +58,7 @@ class Congress:
         actual.center = self.addNode(actual.center, parent, conferee)
         actual.right = self.addNode(actual.right, parent, conferee)
         return actual
-    
+
     def evaluate(self):
         self.set_position(self.root, 0, None, 0)
         self.connections.clear()
@@ -122,7 +122,7 @@ class Congress:
         elif node.left is not None and node.center is node.right is None:
             if parent.left is node:
                 node.center = parent.center
-            node.right = parent.right 
+            node.right = parent.right
             parent = node
         elif node.center is not None and node.left is node.right is None:
             if parent.center is node or parent.center is None:
@@ -347,6 +347,18 @@ class Congress:
                 temp.right = parent.right
                 parent = temp
                 parent = self.deleteNode(parent.left,  parent)
+        return parent
+
+    def changeId(self, parent, node, id, name):
+        if parent is None or node is None:
+            return
+        if parent is node:
+            parent.id = id
+            parent.name = name
+            return parent
+        parent.left = self.changeId(parent.left, node, id, name)
+        parent.center = self.deleteNode(parent.center, node, id, name)
+        parent.right = self.deleteNode(parent.right, node, id, name)
         return parent
 
     # This methos give the connections between the nodes.
