@@ -186,7 +186,7 @@ class Congress:
                 node.left = None
                 node.center = None
                 parent = node
-            elif parent.center.left is not None or parent.center.center is not None or parent.right is not None:
+            elif parent.center.left is not None and parent.center.center is parent.center.right is None:
                 temp = node
                 temp.left = parent.left
                 temp.center = parent.center
