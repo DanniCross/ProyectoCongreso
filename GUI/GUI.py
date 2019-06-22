@@ -112,12 +112,13 @@ class GUI:
                             # Here we evaluate the mouse position for can add and delete nodes
                             if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right
                                     and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
-                                buttonDelete.delete(self.congress, connect.c1)
+                                self.congress.root = buttonDelete.delete(self.congress, connect.c1)
                                 break
                             elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
                                     and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
-                                buttonDelete.delete(self.congress, connect.c2)
+                                self.congress.root = buttonDelete.delete(self.congress, connect.c2)
                                 break
+                        self.congress.evaluate()
                         self.delete = False
 
                     elif cursor.colliderect(BtnPresence.rect):
