@@ -64,7 +64,7 @@ class Congress:
 
     # TODO
     def deleteNode(self, conferee, parent):
-        if conferee is None:
+        if conferee is None or parent is None:
             return
         if parent is conferee:
             if conferee.left is conferee.center is conferee.right is None:
@@ -73,18 +73,29 @@ class Congress:
                 return parent
             elif parent.left is parent.center is None and parent.right is not None:
                 self.deletebranch1(parent, parent.right)
+                return parent
             elif parent.left is parent.right is None and parent.center is not None:
                 self.deletebranch1(parent, parent.center)
+                return parent
             elif parent.right is parent.center is None and parent.left is not None:
                 self.deletebranch1(parent, parent.left)
+                return parent
             elif parent.left is None and parent.center is not None and parent.right is not None:
                 self.deletebranch2(parent, parent.center)
+                return parent
             elif parent.center is None and parent.left is not None and parent.right is not None:
                 self.deletebranch2(parent, parent.left)
+                return parent
             elif parent.right is None and parent.left is not None and parent.center is not None:
                 self.deletebranch2(parent, parent.left)
+                return parent
             elif parent.right is not None and parent.left is not None and parent.center is not None:
                 self.deletebranch3(parent, parent.left)
+                return parent
+        parent.left = self.deleteNode(conferee, parent.left)
+        parent.center = self.deleteNode(conferee, parent.center)
+        parent.right = self.deleteNode(conferee, parent.right)
+        return parent
 
     def deletebranch1(self, parent, node):
         if node is None:
@@ -145,20 +156,25 @@ class Congress:
     def deletebranch3(parent, node):
         if node is None:
             return
+
         if node.left is node.center is node.right is None:
             parent = node
             parent.left = None
+
         elif node.left is not None and node.center is node.right is None:
             parent = node
             node.left = None
+
         elif node.center is not None and node.left is node.right is None:
             node.left = node.center
             parent = node
             node.center = None
+
         elif node.right is not None and node.left is node.center is None:
             node.left = node.right
             parent = node
             node.right = None
+
         elif node.left is not None and node.center is not None and node.right is None:
             if parent.center.left is parent.center.center is parent.center.right is None:
                 parent.center.left = node.left
@@ -193,6 +209,7 @@ class Congress:
                 temp.right = parent.right
                 parent = temp
                 parent.left = self.deleteNode(parent.left)
+
         elif node.left is not None and node.right is not None and node.center is None:
             if parent.center.left is parent.center.center is parent.center.right is None:
                 parent.center.left = node.left
@@ -217,6 +234,56 @@ class Congress:
                 parent.center.left = node.left
                 parent.center.center = node.right
                 node.left = None
+                node.right = None
+                parent = node
+            else:
+                temp = node
+                temp.left = parent.left
+                temp.center = parent.center
+                temp.right = parent.right
+                parent = temp
+                parent.left = self.deleteNode(parent.left)
+
+        elif node.center is not None and node.right is not None and node.left is None:
+            if parent.center.left is parent.center.center is parent.center.right is None:
+                parent.center.center = node.center
+                parent.center.right = node.right
+                node.center = None
+                node.right = None
+                parent = node
+            elif parent.center.left is not None and parent.center.center is parent.center.right is None:
+                parent.center.center = node.center
+                parent.center.right = node.right
+                node.center = None
+                node.right = None
+                parent = node
+            elif parent.center.center is not None and parent.center.left is parent.center.right is None:
+                parent.center.left = node.center
+                parent.center.right = parent.center.center
+                parent.center.center = node.right
+                node.center = None
+                node.right = None
+                parent = node
+            elif parent.center.right is not None and parent.center.left is parent.center.center is None:
+                parent.center.left = node.center
+                parent.center.center = node.right
+                node.center = None
+                node.right = None
+                parent = node
+            else:
+                temp = node
+                temp.left = parent.left
+                temp.center = parent.center
+                temp.right = parent.right
+                parent = temp
+                parent.left = self.deleteNode(parent.left)
+        else:
+            if parent.center.left is parent.center.center is parent.center.right is None:
+                parent.center.left = node.left
+                parent.center.center = node.center
+                parent.center.right = node.right
+                node.left = None
+                node.center = None
                 node.right = None
                 parent = node
             else:

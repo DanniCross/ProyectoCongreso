@@ -19,6 +19,7 @@ class GUI:
         self.congress = congress # Entry of the congress class to the GUI init.
         self.font = None
         self.son = False
+        self.delete = False
         self.Full = "No"
         self.Complete = "No"
         self.cursor = Cursor() # Called to the Cursor class for recognize the mouse with pygame.
@@ -63,6 +64,7 @@ class GUI:
         font = pygame.font.SysFont("Times New Roman", 16)
         verify = self.font.render("Verify assistance.", True, (255, 255, 255))
         add = self.font.render("Enter new conferee.", True, (255, 255, 255))
+        delete = self.font.render("Suspend conferee.", True, (255, 255, 255))
 
         # Load images.
         buttonUp = pygame.image.load(f"Imgs{self.slash}ButtonUp.png")
@@ -71,7 +73,8 @@ class GUI:
         # buttons.
         buttonAdd = ButtonP(pygame.transform.scale(buttonUp, (140, 30)), 
                             pygame.transform.scale(buttonDown, (140, 30)), 100, 650)
-        buttonDelete = ButtonP(buttonUp, buttonDown, 200, 650)
+        buttonDelete = ButtonP(pygame.transform.scale(buttonUp, (140, 30)), 
+                               pygame.transform.scale(buttonDown, (140, 30)), 420, 650)
         BtnPresence = ButtonP(pygame.transform.scale(buttonUp, (130, 30)),
                               pygame.transform.scale(buttonDown, (130, 30)), 260, 650)
 
@@ -97,7 +100,20 @@ class GUI:
                                 break
                         self.son = False
                     elif cursor.colliderect(buttonDelete.rect):
-                        buttonDelete.delete(self.congress, randint(1, 30))
+                        self.delete = True
+                    elif self.delete:
+                        for connect in self.congress.connections:
+                            # Here we evaluate the mouse position for can add and delete nodes
+                            if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right
+                                    and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
+                                buttonDelete.delete(self.congress, connect.c1)
+                                break
+                            elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
+                                    and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
+                                buttonDelete.delete(self.congress, connect.c2)
+                                break
+                        self.delete = False
+                        
                     elif cursor.colliderect(BtnPresence.rect):
                         screenTK = Tk()
                         size = self.screen_size()
@@ -129,6 +145,7 @@ class GUI:
             cursor.update() # update of the cursor position.
             buttonAdd.update(screen, cursor, add) # update of the button image.
             BtnPresence.update(screen, cursor, verify)
+            buttonDelete.update(screen, cursor, delete)
 
             # Drawings on screen.
             if self.congress.Full:
