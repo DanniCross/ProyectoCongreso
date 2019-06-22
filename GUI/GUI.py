@@ -21,6 +21,7 @@ class GUI:
         self.font = None
         self.son = False
         self.delete = False
+        self.change = False
         self.Full = "No"
         self.Complete = "No"
         # Called to the Cursor class for recognize the mouse with pygame.
@@ -69,6 +70,7 @@ class GUI:
         verify = self.font.render("Verify assistance.", True, (255, 255, 255))
         add = self.font.render("Enter new conferee.", True, (255, 255, 255))
         delete = self.font.render("Suspend conferee.", True, (255, 255, 255))
+        change = self.font.render("Replace conferee", True, (255, 255, 255))
 
         # Load images.
         buttonUp = pygame.image.load(f"Imgs{self.slash}ButtonUp.png")
@@ -81,6 +83,8 @@ class GUI:
                                pygame.transform.scale(buttonDown, (140, 30)), 420, 650)
         BtnPresence = ButtonP(pygame.transform.scale(buttonUp, (130, 30)),
                               pygame.transform.scale(buttonDown, (130, 30)), 260, 650)
+        BtnChange = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
+                            pygame.transform.scale(buttonDown, (140, 30)), 580, 650)
 
         # Loop that allows the pygame window operation.
         while True:
@@ -150,6 +154,44 @@ class GUI:
                         screenTK.mainloop()
                         BtnPresence.verify_assitance(
                             screen, self.congress, time.get(), tour.get())
+                    
+                    elif cursor.colliderect(BtnChange.rect):
+                        self.change = True
+
+                    elif self.change:
+                        temp = None
+                        for connect in self.congress.connections:
+                            # Here we evaluate the mouse position for can add and delete nodes
+                            if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right
+                                    and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
+                                temp = connect.c1
+                                break
+                            elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
+                                    and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
+                                temp = connect.c2
+                                break
+                        screenTK2 = Tk()
+                        size = self.screen_size()
+                        screenTK2.geometry(
+                            f"250x150+{int(size[0]/2) - 130}+{int(size[1]/2) - 100}")
+                        screenTK2.title("Replace Conferee")
+                        id = IntVar()
+                        name = StringVar()
+                        textName = StringVar(
+                            value="Write suplent's name.")
+                        textId = StringVar(
+                            value="Write suplent's id.")
+                        labelId = Label(
+                            screenTK2, textvariable=textId).place(x=10, y=5)
+                        labelName = Label(
+                            screenTK2, textvariable=textName).place(x=10, y=50)
+                        id_field = Entry(screenTK2, textvariable = id, width=37).place(x = 10, y = 25)
+                        name_field = Entry(screenTK2, textvariable = name, width=37).place(x = 10, y = 70)
+                        Button(screenTK2, text="Change", command=lambda: self.send(
+                            screenTK2), height=3).place(x=95, y=95)
+                        screenTK2.mainloop()
+                        BtnChange.change(self.congress, temp, id.get(), name.get())
+
                 # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:
                     pygame.quit()
@@ -160,6 +202,7 @@ class GUI:
             buttonAdd.update(screen, cursor, add)
             BtnPresence.update(screen, cursor, verify)
             buttonDelete.update(screen, cursor, delete)
+            BtnChange.update(screen, cursor, change)
 
             # Drawings on screen.
             if self.congress.Full:
@@ -227,4 +270,7 @@ class GUI:
 
     def tour(self, screen, tour, method):
         tour.set(method)
+        screen.destroy()
+    
+    def send(self, screen):
         screen.destroy()
