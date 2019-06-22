@@ -163,6 +163,39 @@ class Congress:
             if parent.center.left is parent.center.center is parent.center.right is None:
                 parent.center.left = node.left
                 parent.center.center = node.center
+                node.left = None
+                node.center = None
+                parent = node
+            elif parent.center.left is not None and parent.center.center is parent.center.right is None:
+                parent.center.right = parent.center.left
+                parent.center.left = node.left
+                parent.center.center = node.center
+                node.left = None
+                node.center = None
+                parent = node
+            elif parent.center.center is not None and parent.center.left is parent.center.right is None:
+                parent.center.right = parent.center.center
+                parent.center.left = node.left
+                parent.center.center = node.center
+                node.left = None
+                node.center = None
+                parent = node
+            elif parent.center.right is not None and parent.center.left is parent.center.center is None:
+                parent.center.left = node.left
+                parent.center.center = node.center
+                node.left = None
+                node.center = None
+            else:
+                temp = node
+                temp.left = parent.left
+                temp.center = parent.center
+                temp.right = parent.right
+                parent = temp
+                parent.left = self.deleteNode(parent.left)
+        elif node.left is not None and node.right is not None and node.center is None:
+            if parent.center.left is parent.center.center is parent.center.right is None:
+                parent.center.left = node.left
+                parent.center.center = node.center
                 node.left = none
                 node.center = none
                 parent = node
@@ -185,15 +218,13 @@ class Congress:
                 parent.center.center = node.center
                 node.left = None
                 node.center = None
-                parent = node
-            elif parent.center.left is not None and parent.center.center is parent.center.right is None:
+            else:
                 temp = node
                 temp.left = parent.left
                 temp.center = parent.center
                 temp.right = parent.right
                 parent = temp
                 parent.left = self.deleteNode(parent.left)
-
     # This methos give the connections between the nodes.
 
     def addConnection(self, c1, c2):
