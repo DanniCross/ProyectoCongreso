@@ -140,9 +140,40 @@ class Congress:
                 parent = node
         elif node.left is not None and node.center is not None and node.right is not None:
             pass
+        return parent
 
     def deletebranch3(parent, node):
-        pass
+        if node is None:
+            return
+        if node.left is node.center is node.right is None:
+            parent = node
+            parent.left = None
+        elif node.left is not None and node.center is node.right is None:
+            parent = node
+            node.left = None
+        elif node.center is not None and node.left is node.right is None:
+            node.left = node.center
+            parent = node
+            node.center = None
+        elif node.right is not None and node.left is node.center is None:
+            node.left = node.right
+            parent = node
+            node.right = None
+        elif node.left is not None and node.center is not None and node.right is None:
+            if parent.center.left is parent.center.center is parent.center.right is None:
+                parent.center.left = node.left
+                parent.center.center = node.center
+                node.left = None
+                node.center = None
+                parent = node
+            elif parent.center.left is not None and parent.center.center is parent.center.right is None:
+                parent.center.right = parent.center.left
+                parent.center.left = node.left
+                parent.center.center = node.center
+                node.left = None
+                node.center = None
+                parent = node
+        
   
     # This methos give the connections between the nodes.
     def addConnection(self, c1, c2):
