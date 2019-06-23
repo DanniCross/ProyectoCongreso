@@ -45,15 +45,12 @@ class Congress:
             if actual.left is None:
                 actual.left = conferee
                 actual.left.parent = actual
-                self.addConnection(actual, actual.left)
             elif actual.center is None:
                 actual.center = conferee
                 actual.center.parent = actual
-                self.addConnection(actual, actual.center)
             elif actual.right is None:
                 actual.right = conferee
                 actual.right.parent = actual
-                self.addConnection(actual, actual.right)
             else:
                 actual.outside = True
             return actual
@@ -61,8 +58,16 @@ class Congress:
         actual.center = self.addNode(actual.center, parent, conferee)
         actual.right = self.addNode(actual.right, parent, conferee)
         return actual
+    
+    def evaluate(self):
+        self.set_position(self.root, 0, None, 0)
+        self.connections.clear()
+        self.level(self.root, 0)
+        self.weight += 1
+        self.TypeDef()
+        way = [self.root.id]
+        self.longer_way(self.root, way)
 
-    # TODO
     def deleteNode(self, conferee, parent):
         if conferee is None or parent is None:
             return
@@ -72,25 +77,25 @@ class Congress:
                 parent = None
                 return parent
             elif parent.left is parent.center is None and parent.right is not None:
-                self.deletebranch1(parent, parent.right)
+                parent = self.deletebranch1(parent, parent.right)
                 return parent
             elif parent.left is parent.right is None and parent.center is not None:
-                self.deletebranch1(parent, parent.center)
+                parent = self.deletebranch1(parent, parent.center)
                 return parent
             elif parent.right is parent.center is None and parent.left is not None:
-                self.deletebranch1(parent, parent.left)
+                parent = self.deletebranch1(parent, parent.left)
                 return parent
             elif parent.left is None and parent.center is not None and parent.right is not None:
-                self.deletebranch2(parent, parent.center)
+                parent = self.deletebranch2(parent, parent.center)
                 return parent
             elif parent.center is None and parent.left is not None and parent.right is not None:
-                self.deletebranch2(parent, parent.left)
+                parent = self.deletebranch2(parent, parent.left)
                 return parent
             elif parent.right is None and parent.left is not None and parent.center is not None:
-                self.deletebranch2(parent, parent.left)
+                parent = self.deletebranch2(parent, parent.left)
                 return parent
             elif parent.right is not None and parent.left is not None and parent.center is not None:
-                self.deletebranch3(parent, parent.left)
+                parent = self.deletebranch3(parent, parent.left)
                 return parent
         parent.left = self.deleteNode(conferee, parent.left)
         parent.center = self.deleteNode(conferee, parent.center)
@@ -108,195 +113,247 @@ class Congress:
         if node is None:
             return None
         if node.left is node.center is node.right is None:
+            if parent.center is node:
+                node.left = parent.left
+            else:
+                node.center = parent.center
+            node.right = parent.right
             parent = node
         elif node.left is not None and node.center is node.right is None:
+            if parent.left is node:
+                node.center = parent.center
+            node.right = parent.right 
             parent = node
         elif node.center is not None and node.left is node.right is None:
             if parent.center is node or parent.center is None:
+                node.left = parent.left
+                node.right = parent.right
                 parent = node
             elif parent.center is not None:
                 node.left = node.center
+                node.center = parent.center
+                node.right = parent.right
                 node.center = None
                 parent = node
         elif node.right is not None and node.left is node.center is None:
             if parent.right is not None:
                 node.center = node.right
-                node.right = None
+                node.right = parent.right
                 parent = node
+            elif parent.center is node:
+                node.left = parent.left
             else:
-                parent = node
+                node.center = parent.center
+            parent = node
         elif node.left is not None and node.center is not None and node.right is None:
             if parent.center is not None and parent.left is node:
                 node.right = node.center
-                node.center = None
+                node.center = parent.center
                 parent = node
             else:
+                node.right = parent.right
                 parent = node
         elif node.left is not None and node.right is not None and node.center is None:
             if parent.right is not None:
                 node.center = node.right
-                node.right = None
+                node.right = parent.right
                 parent = node
             else:
+                node.center = parent.center
                 parent = node
         elif node.left is None and node.center is not None and node.right is not None:
             if parent.left is node and parent.center is not None:
                 node.left = node.center
-                node.center = None
+                node.center = parent.center
                 parent = node
             else:
                 node.left = node.center
                 node.center = node.right
-                node.right = None
+                node.right = parent.right
                 parent = node
         elif node.left is not None and node.center is not None and node.right is not None:
-            pass
+            temp = Conferee(node.party, node.id, node.name)
+            temp.parent = node.parent
+            temp.outside = node.outside
+            temp.level = node.level
+            temp.left = parent.left
+            temp.center = parent.center
+            temp.right = parent.right
+            parent = temp
+            parent = self.deleteNode(parent.left, parent)
         return parent
 
-    def deletebranch3(parent, node):
+    def deletebranch3(self, parent, node):
         if node is None:
             return
 
         if node.left is node.center is node.right is None:
+            node.center = parent.center
+            node.right = parent.right
             parent = node
-            parent.left = None
 
         elif node.left is not None and node.center is node.right is None:
+            node.center = parent.center
+            node.right = parent.right
             parent = node
-            node.left = None
 
         elif node.center is not None and node.left is node.right is None:
             node.left = node.center
+            node.center = parent.center
+            node.right = parent.right
             parent = node
-            node.center = None
 
         elif node.right is not None and node.left is node.center is None:
             node.left = node.right
+            node.center = parent.center
+            node.right = parent.right
             parent = node
-            node.right = None
 
         elif node.left is not None and node.center is not None and node.right is None:
             if parent.center.left is parent.center.center is parent.center.right is None:
                 parent.center.left = node.left
                 parent.center.center = node.center
                 node.left = None
-                node.center = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.left is not None and parent.center.center is parent.center.right is None:
                 parent.center.right = parent.center.left
                 parent.center.left = node.left
                 parent.center.center = node.center
                 node.left = None
-                node.center = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.center is not None and parent.center.left is parent.center.right is None:
                 parent.center.right = parent.center.center
                 parent.center.left = node.left
                 parent.center.center = node.center
                 node.left = None
-                node.center = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.right is not None and parent.center.left is parent.center.center is None:
                 parent.center.left = node.left
                 parent.center.center = node.center
                 node.left = None
-                node.center = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             else:
-                temp = node
+                temp = Conferee(node.party, node.id, node.name)
+                temp.parent = node.parent
+                temp.outside = node.outside
+                temp.level = node.level
                 temp.left = parent.left
                 temp.center = parent.center
                 temp.right = parent.right
                 parent = temp
-                parent.left = self.deleteNode(parent.left)
+                parent = self.deleteNode(parent.left, parent)
 
         elif node.left is not None and node.right is not None and node.center is None:
             if parent.center.left is parent.center.center is parent.center.right is None:
                 parent.center.left = node.left
                 parent.center.right = node.right
                 node.left = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.left is not None and parent.center.center is parent.center.right is None:
                 parent.center.center = parent.center.left
                 parent.center.left = node.left
                 parent.center.right = node.right
                 node.left = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.center is not None and parent.center.left is parent.center.right is None:
                 parent.center.left = node.left
                 parent.center.right = node.right
                 node.left = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.right is not None and parent.center.left is parent.center.center is None:
                 parent.center.left = node.left
                 parent.center.center = node.right
                 node.left = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             else:
-                temp = node
+                temp = Conferee(node.party, node.id, node.name)
+                temp.parent = node.parent
+                temp.outside = node.outside
+                temp.level = node.level
                 temp.left = parent.left
                 temp.center = parent.center
                 temp.right = parent.right
                 parent = temp
-                parent.left = self.deleteNode(parent.left)
+                parent = self.deleteNode(parent.left, parent)
 
         elif node.center is not None and node.right is not None and node.left is None:
             if parent.center.left is parent.center.center is parent.center.right is None:
                 parent.center.center = node.center
                 parent.center.right = node.right
-                node.center = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.left is not None and parent.center.center is parent.center.right is None:
                 parent.center.center = node.center
                 parent.center.right = node.right
-                node.center = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.center is not None and parent.center.left is parent.center.right is None:
                 parent.center.left = node.center
                 parent.center.right = parent.center.center
                 parent.center.center = node.right
-                node.center = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             elif parent.center.right is not None and parent.center.left is parent.center.center is None:
                 parent.center.left = node.center
                 parent.center.center = node.right
-                node.center = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             else:
-                temp = node
+                temp = Conferee(node.party, node.id, node.name)
+                temp.parent = node.parent
+                temp.outside = node.outside
+                temp.level = node.level
                 temp.left = parent.left
                 temp.center = parent.center
                 temp.right = parent.right
                 parent = temp
-                parent.left = self.deleteNode(parent.left)
+                parent = self.deleteNode(parent.center, parent)
         else:
             if parent.center.left is parent.center.center is parent.center.right is None:
                 parent.center.left = node.left
                 parent.center.center = node.center
                 parent.center.right = node.right
                 node.left = None
-                node.center = None
-                node.right = None
+                node.center = parent.center
+                node.right = parent.right
                 parent = node
             else:
-                temp = node
+                temp = Conferee(node.party, node.id, node.name)
+                temp.parent = node.parent
+                temp.outside = node.outside
+                temp.level = node.level
                 temp.left = parent.left
                 temp.center = parent.center
                 temp.right = parent.right
                 parent = temp
-                parent.left = self.deleteNode(parent.left)
+                parent = self.deleteNode(parent.left,  parent)
+        return parent
 
     # This methos give the connections between the nodes.
 
     def addConnection(self, c1, c2):
+        if c2 is None:
+            return
         conect = Connection(c1, c2)
         conAux = Connection(c2, c1)
         if conect in self.connections or conAux in self.connections:
@@ -344,6 +401,9 @@ class Congress:
         if parent.level >= self.levelMax:
             self.levelMax = parent.level + 1
             self.height = self.levelMax
+        self.addConnection(parent, parent.left)
+        self.addConnection(parent, parent.center)
+        self.addConnection(parent, parent.right)
         self.level(parent.left, i + 1)
         self.level(parent.center, i + 1)
         self.level(parent.right, i + 1)
