@@ -349,16 +349,16 @@ class Congress:
                 parent = self.deleteNode(parent.left,  parent)
         return parent
 
-    def changeId(self, parent, node, id, name):
+    def ChangeId(self, parent, node, id, name):
         if parent is None or node is None:
             return
         if parent is node:
             parent.id = id
             parent.name = name
             return parent
-        parent.left = self.changeId(parent.left, node, id, name)
-        parent.center = self.deleteNode(parent.center, node, id, name)
-        parent.right = self.deleteNode(parent.right, node, id, name)
+        parent.left = self.ChangeId(parent.left, node, id, name)
+        parent.center = self.ChangeId(parent.center, node, id, name)
+        parent.right = self.ChangeId(parent.right, node, id, name)
         return parent
 
     # This methos give the connections between the nodes.

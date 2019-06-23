@@ -191,6 +191,7 @@ class GUI:
                             screenTK2), height=3).place(x=95, y=95)
                         screenTK2.mainloop()
                         self.congress.root = BtnChange.change(self.congress, temp, id.get(), name.get())
+                        self.change = False
 
                 # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:
