@@ -58,15 +58,24 @@ class Congress:
         actual.center = self.addNode(actual.center, parent, conferee)
         actual.right = self.addNode(actual.right, parent, conferee)
         return actual
-
-    def evaluate(self):
-        self.set_position(self.root, 0, None, 0)
+    
+    def delete(self, conferee, parent):
         self.connections.clear()
+        self.levelMax = 0
+        self.max = 0
+        self.height = 0
+        self.weight = 0
+        self.Type = ""
+        self.Full = False
+        self.Complete = False
+        self.way = []
+        self.root = self.deleteNode(conferee, parent)
+        self.set_position(self.root, 0, None, 0)
         self.level(self.root, 0)
-        self.weight += 1
         self.TypeDef()
         way = [self.root.id]
         self.longer_way(self.root, way)
+        return self.root
 
     def deleteNode(self, conferee, parent):
         if conferee is None or parent is None:

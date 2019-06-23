@@ -122,7 +122,6 @@ class GUI:
                                     and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
                                 self.congress.root = buttonDelete.delete(self.congress, connect.c2)
                                 break
-                        self.congress.evaluate()
                         self.delete = False
 
                     elif cursor.colliderect(BtnPresence.rect):

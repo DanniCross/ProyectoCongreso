@@ -28,7 +28,7 @@ class ButtonP(pygame.sprite.Sprite):
 
     # Method for the delete button.
     def delete(self, congress, parent):
-        return congress.deleteNode(parent, congress.root)
+        return congress.delete(parent, congress.root)
     
     def verify_assitance(self, screen, congress, time, tour):
         if tour == 1:
