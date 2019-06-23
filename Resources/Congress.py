@@ -31,7 +31,7 @@ class Congress:
             newconferee.id = self.max
             self.root = self.addNode(self.root, parent, newconferee)
             self.set_position(self.root, 0, None, 0)
-            self.level(self.root, 0)
+            self.root = self.level(self.root, 0)
             self.weight += 1
             self.TypeDef()
             way = [self.root.id]
@@ -71,11 +71,11 @@ class Congress:
         self.way = []
         self.root = self.deleteNode(conferee, parent)
         self.set_position(self.root, 0, None, 0)
-        self.level(self.root, 0)
+        self.root = self.level(self.root, 0)
         self.TypeDef()
         way = [self.root.id]
         self.longer_way(self.root, way)
-        return self.root
+        return self
 
     def deleteNode(self, conferee, parent):
         if conferee is None or parent is None:
@@ -357,6 +357,13 @@ class Congress:
                 parent = temp
                 parent = self.deleteNode(parent.left,  parent)
         return parent
+    
+    def change(self, parent, node, id, name):
+        self.root = self.ChangeId(parent, node, id, name)
+        self.way = []
+        way = [self.root.id]
+        self.longer_way(self.root, way)
+        return self.root
 
     def ChangeId(self, parent, node, id, name):
         if parent is None or node is None:
@@ -422,12 +429,19 @@ class Congress:
         if parent.level >= self.levelMax:
             self.levelMax = parent.level + 1
             self.height = self.levelMax
-        self.addConnection(parent, parent.left)
-        self.addConnection(parent, parent.center)
-        self.addConnection(parent, parent.right)
-        self.level(parent.left, i + 1)
-        self.level(parent.center, i + 1)
-        self.level(parent.right, i + 1)
+        if parent.left is not None:
+            parent.left.parent = parent
+            self.addConnection(parent, parent.left)
+        if parent.center is not None:
+            parent.center.parent = parent
+            self.addConnection(parent, parent.center)
+        if parent.right is not None:
+            parent.right.parent = parent
+            self.addConnection(parent, parent.right)
+        parent.left = self.level(parent.left, i + 1)
+        parent.center = self.level(parent.center, i + 1)
+        parent.right = self.level(parent.right, i + 1)
+        return parent
 
     def Tours(self):
         conferees = [self.root]
@@ -496,6 +510,7 @@ class Congress:
             self.Full = True
             self.Complete = True
         elif Type is "COMPLETE":
+            self.Full = False
             self.Complete = True
 
     def __Type(self, conferees):

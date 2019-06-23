@@ -116,11 +116,11 @@ class GUI:
                             # Here we evaluate the mouse position for can add and delete nodes
                             if (connect.c1.rect.x < pygame.mouse.get_pos()[0] < connect.c1.rect.right
                                     and connect.c1.rect.y < pygame.mouse.get_pos()[1] < connect.c1.rect.bottom):
-                                self.congress.root = buttonDelete.delete(self.congress, connect.c1)
+                                self.congress = buttonDelete.delete(self.congress, connect.c1)
                                 break
                             elif (connect.c2.rect.x < pygame.mouse.get_pos()[0] < connect.c2.rect.right
                                     and connect.c2.rect.y < pygame.mouse.get_pos()[1] < connect.c2.rect.bottom):
-                                self.congress.root = buttonDelete.delete(self.congress, connect.c2)
+                                self.congress = buttonDelete.delete(self.congress, connect.c2)
                                 break
                         self.delete = False
 
@@ -184,7 +184,7 @@ class GUI:
                             screenTK2, textvariable=textId).place(x=10, y=5)
                         labelName = Label(
                             screenTK2, textvariable=textName).place(x=10, y=50)
-                        id_field = Entry(screenTK2, textvariable = id, width=37).place(x = 10, y = 25)
+                        id_field = Spinbox(screenTK2, from_=(self.congress.max + 1), to=100, wrap=True, textvariable = id, width=37).place(x = 10, y = 25)
                         name_field = Entry(screenTK2, textvariable = name, width=37).place(x = 10, y = 70)
                         Button(screenTK2, text="Change", command=lambda: self.send(
                             screenTK2), height=3).place(x=95, y=95)
@@ -208,8 +208,12 @@ class GUI:
             if self.congress.Full:
                 self.Full = "Yes"
                 self.Complete = "Yes"
-            if self.congress.Complete:
+            elif self.congress.Complete:
                 self.Complete = "Yes"
+                self.Full = "No"
+            else:
+                self.Complete = "No"
+                self.Full = "No"
             pygame.draw.rect(screen, (0, 0, 0), (0, 0, 200, 240))
             pygame.draw.rect(screen, (255, 255, 255), (10, 10, 180, 220))
             screen.blit((fontIn.render("INFO", True, (0, 0, 0))), (77, 15))
