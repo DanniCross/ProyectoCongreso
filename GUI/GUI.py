@@ -190,7 +190,7 @@ class GUI:
                         Button(screenTK2, text="Change", command=lambda: self.send(
                             screenTK2), height=3).place(x=95, y=95)
                         screenTK2.mainloop()
-                        BtnChange.change(self.congress, temp, id.get(), name.get())
+                        self.congress.root = BtnChange.change(self.congress, temp, id.get(), name.get())
 
                 # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:
