@@ -40,3 +40,6 @@ class ButtonP(pygame.sprite.Sprite):
             congress.inorder(congress.root, screen, time)
         elif tour == 4:
             congress.posorder(congress.root, screen, time)
+        
+    def change(self, congress, parent, id, name):
+        return congress.ChangeId(congress.root, parent, id, name)
