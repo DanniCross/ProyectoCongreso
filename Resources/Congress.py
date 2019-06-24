@@ -58,7 +58,7 @@ class Congress:
         actual.center = self.addNode(actual.center, parent, conferee)
         actual.right = self.addNode(actual.right, parent, conferee)
         return actual
-    
+
     def delete(self, conferee, parent):
         self.connections.clear()
         self.levelMax = 0
@@ -357,7 +357,7 @@ class Congress:
                 parent = temp
                 parent = self.deleteNode(parent.left,  parent)
         return parent
-    
+
     def change(self, parent, node, id, name):
         self.root = self.ChangeId(parent, node, id, name)
         self.way = []
@@ -376,6 +376,107 @@ class Congress:
         parent.center = self.ChangeId(parent.center, node, id, name)
         parent.right = self.ChangeId(parent.right, node, id, name)
         return parent
+
+    def meeting(self, parent, color):
+        color = parent.party
+        if parent.left is None and parent.center is None and parent.right is None:
+            return
+        if parent.left is not None and parent.center is parent.right is None:
+            if parent.left.party is color:
+                self.meeting(parent.left, color)
+            # sin saber como hacerlo
+            else:
+                if self.root.party is color:
+                    parent.left = self.root
+                else:
+                    if self.root.left.party is color:
+                        parent.left = self.root.left
+                    else:
+                        pass
+                        # self.meeting()
+
+        if parent.center is not None and parent.left is parent.right is None:
+            if parent.center.party is color:
+                self.meeting(parent.center, color)
+            else:
+                if self.root.party is color:
+                    parent.center = self.root
+                else:
+                    if self.root.center.party is color:
+                        parent.center = self.root.center
+                    else:
+                        pass
+                        #self.meeting()
+
+
+        if parent.right is not None and parent.left is parent.center is None:
+            if parent.right.party is color:
+                self.meeting(parent.right, color)
+            else:
+                if self.root.party is color:
+                    parent.right = self.root
+                else:
+                    if self.root.right.party is color:
+                        parent.right = self.root.right
+                    else:
+                        pass
+                        #self.meeting()
+
+        if parent.left is not None and parent.center is not None and parent.right is None:
+            if parent.left.party is color and parent.center.party is not color:
+                self.meeting(parent.left, color)
+            if parent.center.party is color and parent.left.party is not color:
+                self.meeting(parent.center, color)
+            if parent.left.party is color and parent.center.party is color:
+                self.meeting(parent.left, color)
+                self.meeting(parent.center, color)
+            else:
+                pass
+
+        if parent.left is not None and parent.right is not None and parent.center is None:
+            if parent.left.party is color and parent.right.party is not color:
+                self.meeting(parent.left, color)
+            if parent.right.party is color and parent.left.party is not color:
+                self.meeting(parent.center, color)
+            if parent.left.party is color and parent.right.party is color:
+                self.meeting(parent.left, color)
+                self.meeting(parent.right, color)
+            else:
+                pass
+
+        if parent.center is not None and parent.right is not None and parent.left is None:
+            if parent.center.party is color and parent.right.party is not color:
+                self.meeting(parent.center, color)
+            if parent.right.party is color and parent.center.party is not color:
+                self.meeting(parent.right, color)
+            if parent.center.party is color and parent.right.party is color:
+                self.meeting(parent.center, color)
+                self.meeting(parent.right, color)
+            else:
+                pass
+
+        if parent.left is not None and parent.center is not None and parent.right is not None:
+            if parent.left.party is color and parent.center.party is not color and parent.right.party is not color:
+                self.meeting(parent.left, color)
+            if parent.center.party is color and parent.left.party is not color and parent.right.party is not color:
+                self.meeting(parent.center, color)
+            if parent.right.party is color and parent.left.party is not color and parent.center.party is not color:
+                self.meeting(parent.right, color)
+            if parent.left.party is color and parent.center.party is color and parent.right.party is not color:
+                self.meeting(parent.left, color)
+                self.meeting(parent.center, color)
+            if parent.left.party is color and parent.right.party is color and parent.center.party is not color:
+                self.meeting(parent.left, color)
+                self.meeting(parent.right, color)
+            if parent.center.party is color and parent.right.party is color and parent.left.party is not color:
+                self.meeting(parent.center, color)
+                self.meeting(parent.right, color)
+            if parent.left.party is color and parent.center.party is color and parent.right.party is color:
+                self.meeting(parent.left, color)
+                self.meeting(parent.center, color)
+                self.meeting(parent.right, color)
+            else:
+                pass
 
     # This methos give the connections between the nodes.
 
