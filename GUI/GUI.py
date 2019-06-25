@@ -227,10 +227,10 @@ class GUI:
                                         leader = connect.c2
                                         break
                                 break
-                        self.congress.root = BtnMeet.meet(self.congress, leader)
+                        self.congress = BtnMeet.meet(self.congress, leader)
                     
                     elif cursor.colliderect(BtnEnd.rect):
-                        BtnEnd.endmeet(self.congress)
+                        self.congress = BtnEnd.endmeet(self.congress)
 
                 # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:

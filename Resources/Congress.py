@@ -413,10 +413,21 @@ class Congress:
 
         for conferee in self.changeTwo:
             self.root = self.EndChange(self.root, conferee)
-        self.way.clear()
+        self.connections.clear()
+        self.levelMax = 0
+        self.max = 0
+        self.height = 0
+        self.weight = 0
+        self.Type = ""
+        self.Full = False
+        self.Complete = False
+        self.way = []
+        self.set_position(self.root, 0, None, 0)
+        self.root = self.level(self.root, 0)
+        self.TypeDef()
         way = [self.root.id]
         self.longer_way(self.root, way)
-        return self.root
+        return self
 
     def EndChange(self, parent, node):
         if parent is None:
@@ -564,10 +575,21 @@ class Congress:
         self.ready1 = False
         self.changeTwo.clear()
         self.root = self.__reset(self.root)
-        self.way.clear()
+        self.connections.clear()
+        self.levelMax = 0
+        self.max = 0
+        self.height = 0
+        self.weight = 0
+        self.Type = ""
+        self.Full = False
+        self.Complete = False
+        self.way = []
+        self.set_position(self.root, 0, None, 0)
+        self.root = self.level(self.root, 0)
+        self.TypeDef()
         way = [self.root.id]
         self.longer_way(self.root, way)
-        return self.root
+        return self
 
     def __reset(self, parent):
         if parent is None:
