@@ -70,7 +70,9 @@ class GUI:
         verify = self.font.render("Verify assistance.", True, (255, 255, 255))
         add = self.font.render("Enter new conferee.", True, (255, 255, 255))
         delete = self.font.render("Suspend conferee.", True, (255, 255, 255))
-        change = self.font.render("Replace conferee", True, (255, 255, 255))
+        change = self.font.render("Replace conferee.", True, (255, 255, 255))
+        meet = self.font.render("Party meeting.", True, (255, 255, 255))
+        end = self.font.render("End meeting.", True, (255, 255, 255))
 
         # Load images.
         buttonUp = pygame.image.load(f"Imgs{self.slash}ButtonUp.png")
@@ -80,11 +82,15 @@ class GUI:
         buttonAdd = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
                             pygame.transform.scale(buttonDown, (140, 30)), 100, 650)
         buttonDelete = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
-                               pygame.transform.scale(buttonDown, (140, 30)), 420, 650)
+                               pygame.transform.scale(buttonDown, (140, 30)), 410, 650)
         BtnPresence = ButtonP(pygame.transform.scale(buttonUp, (130, 30)),
                               pygame.transform.scale(buttonDown, (130, 30)), 260, 650)
         BtnChange = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
-                            pygame.transform.scale(buttonDown, (140, 30)), 580, 650)
+                            pygame.transform.scale(buttonDown, (140, 30)), 570, 650)
+        BtnMeet = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
+                            pygame.transform.scale(buttonDown, (140, 30)), 730, 650)
+        BtnEnd = ButtonP(pygame.transform.scale(buttonUp, (140, 30)),
+                         pygame.transform.scale(buttonDown, (140, 30)), 890, 650)
 
         # Loop that allows the pygame window operation.
         while True:
@@ -192,6 +198,40 @@ class GUI:
                         self.congress.root = BtnChange.change(self.congress, temp, id.get(), name.get())
                         self.change = False
 
+                    elif cursor.colliderect(BtnMeet.rect):
+                        screenTK3 = Tk()
+                        size = self.screen_size()
+                        screenTK3.geometry(
+                            f"430x110+{int(size[0]/2) - 230}+{int(size[1]/2) - 100}")
+                        screenTK3.title("Party Meeting.")
+                        party = IntVar()
+                        leader = None
+                        textmeet = StringVar(value="Select the party that's going to meet.")
+                        labelmeet = Label(screenTK3, textvariable=textmeet).place(x=5, y=20)
+                        Button(screenTK3, text="Red Party",
+                               command=lambda: self.party(screenTK3, party, 1)).place(x=5, y=60)
+                        Button(screenTK3, text="Blue Party",
+                               command=lambda: self.party(screenTK3, party, 2)).place(x=100, y=60)
+                        Button(screenTK3, text="Green Party",
+                               command=lambda: self.party(screenTK3, party, 3)).place(x=213, y=60)
+                        Button(screenTK3, text="Yellow Party",
+                               command=lambda: self.party(screenTK3, party, 4)).place(x=320, y=60)
+                        screenTK3.mainloop()
+                        for par in self.congress.parties:
+                            if party.get() == par.id:
+                                for connect in self.congress.connections:
+                                    if connect.c1.id is par.leader:
+                                        leader = connect.c1
+                                        break
+                                    elif connect.c2.id is par.leader:
+                                        leader = connect.c2
+                                        break
+                                break
+                        self.congress.root = BtnMeet.meet(self.congress, leader)
+                    
+                    elif cursor.colliderect(BtnEnd.rect):
+                        BtnEnd.endmeet(self.congress)
+
                 # With this event the output of the initial loop is given.
                 if event.type is pygame.QUIT:
                     pygame.quit()
@@ -203,6 +243,8 @@ class GUI:
             BtnPresence.update(screen, cursor, verify)
             buttonDelete.update(screen, cursor, delete)
             BtnChange.update(screen, cursor, change)
+            BtnMeet.update(screen, cursor, meet)
+            BtnEnd.update(screen, cursor, end)
 
             # Drawings on screen.
             if self.congress.Full:
@@ -277,4 +319,8 @@ class GUI:
         screen.destroy()
     
     def send(self, screen):
+        screen.destroy()
+    
+    def party(self, screen, party, id):
+        party.set(id)
         screen.destroy()

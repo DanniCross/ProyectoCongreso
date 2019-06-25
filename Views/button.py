@@ -43,3 +43,9 @@ class ButtonP(pygame.sprite.Sprite):
         
     def change(self, congress, parent, id, name):
         return congress.change(congress.root, parent, id, name)
+
+    def meet(self, congress, leader):
+        return congress.Meet(leader)
+
+    def endmeet(self, congress):
+        return congress.reset()
